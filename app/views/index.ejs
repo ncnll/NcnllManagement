@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+
+    <form method="post" enctype="multipart/form-data" action="/vpi/picupload">
+        Name:<input type="text" name="username">
+        Password:<input type="password" name="password">
+        <input type="file" name="uploadedPic">
+        <input type="submit">
+    </form>
+  </body>
+</html>

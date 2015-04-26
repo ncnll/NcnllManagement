@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> <%= application_name_cn %> </title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<cmstudio:htmlBase/>
+		<link rel="shortcut icon" type="image/x-icon" href="resources/${icon_name}"/>
+		<!-- <link rel="stylesheet" type="text/css" href="/css/basic/picture/pictureManage.css" /> -->
+		
+		<%- include ../common/jqueryEasyUI.js.ejs %>
+
+		<script type="text/javascript" src="/js/basic/system/mainPageManager.js"></script>
+	</head>
+	<body>
+	<!-- <form> -->
+
+	<div style="width:900px; margin-top: 20px;margin-left: auto;margin-right: auto;2">
+		<h1>图片轮播更新</h1>
+		<table id = "mainPage">
+			<tr  hidden="hidden">
+				<td>编号</td>
+				<td><input type="text" id ="_id" name = "_id" style="width:180px;display: none "  /></td>
+			</tr>
+			<!--class="easyui-dialog" data-options="closed:'true',modal:true,buttons:'#dlg-buttons-->
+			<tr>
+			<div id = "pictureslist" >
+			<div id = "imglist"  style="width: 1000px;"></div>
+				<form method="post" enctype="multipart/form-data" action="/vpi/picupload" id ="uplodeimage">
+				<input type="file" name="uploadedPic" onchange="uplodeimage()">
+				</form>
+				</div>
+			</tr>
+			<tr hidden="true">
+                    <td>图片</td>
+             		    <td><input type="text" id ="pictures" name = "pictures"  style="width:180px;height:300px:"/></td>
+					<td>
+					<a href="javascript:void(0)" class="easyui-linkbutton"  onclick="detailed()" >图片详情</a></td>
+            </tr>
+			<tr>
+                   <td>介绍文字</td>
+                   <td><textarea id ="introduction" name = "introduction" style="width:180px;"></textarea></td>
+             </tr>
+		</table>
+
+                    <a href="javascript:void(0)" class="easyui-linkbutton"   onclick="saveForm()" >请点击以完成更新</a>
+	</div>
+
+
+	</body>
+</html>

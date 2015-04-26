@@ -1,0 +1,53 @@
+{
+  "name": "vpi",
+  "description": "VPI by Yammy~",
+  "keywords": [
+    "express",
+    "mongoose",
+    "mongodb",
+    "passport",
+    "weipa"
+  ],
+  "version": "3.0.0",
+  "private": false,
+  "author": "Yammy <yammy@qq.com> (http://charmyin.github.com)",
+  "repository" : {
+    "type" : "git",
+    "url" : ""
+  },
+  "engines": {
+    "node": "0.10.x",
+    "npm":  "1.4.3"
+  },
+  "scripts": {
+    "start": "node vpiserver.js"
+  },
+  "dependencies": {
+    "express": "~3.4.x",
+    "ejs": "~1.0.0",
+    "mongoose": "~3.8.17",
+    "connect-mongo": " ~0.4.1",
+    "connect-flash": "~0.1.1",
+    "passport": "~0.2.1",
+    "passport-local": "~1.0.0",
+    "winston": "~0.8.1",
+    "notifier": "~0.1.5",
+    "async": "~0.2.10",
+    "view-helpers": "~0.1.5",
+    "forever": "~0.11.1",
+    "connect-multiparty": "~1.2.5",
+    "gridfs-stream":"~0.5.1",
+    "gm":"~1.16.0",
+    "multer":"~0.1.6",
+    "body-parser": "~1.8.1",
+    "imagemagick": ">=0.1.3",
+    "log4js":"0.6.21",
+    "mime":"latest"
+  },
+  "devDependencies": {
+    "supertest": "latest",
+    "should": "latest",
+    "mocha": "latest",
+    "nodemon": "latest"
+  }
+}

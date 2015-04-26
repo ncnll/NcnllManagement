@@ -1,0 +1,18 @@
+
+<div class="thumbnail">
+  <img alt="..." src="/images/<%= uri %>" style="cursor:pointer;height:185px; width:300px;">
+
+    <!--<img alt="..." src="/images/thumbnail/<%= uri %>" style="cursor:pointer;height:185px; width:300px;">-->
+  <div class="caption">
+  <h4>
+    <span class="label label-info" style="height:20px; font-weight:bold;"><%= name %></span>
+  	<% if(this.model.get("lesson")){%>
+      <span class="label label-primary" style="float:right;"><%= lesson.title %></span>
+  	<% } %>
+   </h4>
+    <div style="height:60px; text-indent:15px;"><%= description %></div>
+    <p style="height:16px; text-align:right;"> <span class="label label-warning"><%= user.username %></span></p>
+  </div>
+</div>
+
+

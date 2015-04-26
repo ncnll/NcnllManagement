@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> <%= application_name_cn %> </title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<cmstudio:htmlBase/>
+		<link rel="shortcut icon" type="image/x-icon" href="resources/${icon_name}"/>
+		<link rel="stylesheet" type="text/css" href="/css/basic/class/classTypeManage.css" />
+		
+		<%- include ../common/jqueryEasyUI.js.ejs %>
+
+		<script type="text/javascript" src="/js/basic/teacher/teacherManage.js"></script>
+	</head>
+	<body>
+		
+ 	    <table id="teacherGrid">
+	    </table>
+
+	    <div id="toolbar">
+			登录名:
+			<input id = "username"/>
+			状态:
+			<input class="easyui-combobox" id="disbale"  data-options="
+					panelHeight:'auto',
+					valueField: 'value',
+					value:'',
+					editable:false,
+					textField: 'label',
+					data: [{
+						label: '全部',
+						value: ''
+					},{
+						label: '已启用',
+						value: 'false'
+					},{
+						label: '已禁用',
+						value: 'true'
+					}]" />
+
+
+			<a href="javascript:void(0)" onclick="select()" class="easyui-linkbutton" iconCls="icon-search">
+				搜索</a>
+
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newForm()">新建</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editForm()">修改</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroySelectedItems()">删除</a>
+	    </div>
+	    <div id="dlg" class="easyui-dialog" data-options="closed:'true',modal:true,buttons:'#dlg-buttons'">
+	        <form id="fm" method="post" >
+	            <div class="fitem">
+	                <label>登录名：</label>
+	                <input name="username" id="usernameId" class="easyui-validatebox" required="true">
+	            </div>
+				<div class="fitem">
+	                <label>真实名称：</label>
+	                <input name="fullName" class="easyui-validatebox" required="true">
+	            </div>
+	           <div class="fitem">
+	                <label>邮箱：</label>
+	                <input name="email" class="easyui-validatebox" required="true">
+	            </div>
+	            <!-- <div class="fitem">
+	                <label>描述：</label>
+	                <textarea name="description" placeholder="请输入备注..."></textarea>
+	            </div> -->
+	        </form>
+	    </div>
+	    <div id="dlg-buttons">
+		        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveForm()">保存</a>
+		        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+		</div>
+		
+	</body>
+</html>

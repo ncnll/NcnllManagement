@@ -1,0 +1,16 @@
+<div class="row" id="<%= _id%>">
+    <div class="col-xs-4">
+        <a href="#lesson/<%= _id %>" class="thumbnail" >
+          <img data-src="holder.js/100%x180" alt="..." src="/images/thumbnail/<%= image %>" style="height:185px;width:250px;" data-lessonid="<%= _id %>">
+        </a>
+    </div>
+    <div class="col-xs-8 thumbnail lessonListItemContent" style="background:#EAEAEA;height:195px;">
+        <p><span style="font-size:19px; font-weight:bold; color:red;"><%= title %></span>
+        <% if(!this.model.get("classType")){%>
+          <span class="label label-danger" style="float:right;">免费教程</span>
+        <% } %>
+        </p>
+        <p style="margin-top:8px;"><%= content %></p>
+
+    </div>
+</div>

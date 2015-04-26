@@ -1,0 +1,29 @@
+<div class="modal fade bs-example-modal-lg" id="detailModelDiv" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+        <h4 class="modal-title"><%= title %></h4>
+      </div>
+      <div class="modal-body">
+
+        <a href="javascript:void(0);" class="thumbnail" >
+          <img data-src="holder.js/100%x180" alt="..." src="/images/fav.jpg" >
+        </a>
+
+        <p><%= content %></p>
+
+      <div style="text-align:center;">
+            <div class="btn-group btn-group-lg">
+                <button type="button" class="btn btn-warning praiseBtn" data-lessonid="<%= _id %>"><span class="glyphicon glyphicon-thumbs-up"></span>赞&nbsp;<span class="badge praiseCountBadage"><%= praiseCount %></span></button>
+                <button type="button" class="btn btn-primary uploadBtn"><span class="glyphicon glyphicon-floppy-open"></span>上传作业</button>
+                <button type="button" class="btn btn-success "><span class="glyphicon glyphicon-export"></span>分享</button>
+            </div>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>

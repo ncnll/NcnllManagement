@@ -1,0 +1,31 @@
+<!-- Modal -->
+        <div class="modal fade" id="changePwdModal" ng-controller="loginCtrl" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                        <h4 class="modal-title" id="loginModalLabel">修改密码</h4>
+                    </div>
+                    <div class="modal-body" >
+                        <form class="form-signin" role="form" style="width:80%;margin:0 auto 0 auto;" ng-submit="processForm()" >
+                            <p>
+                                <span class="glyphicon glyphicon-user" style="display: inline-block; width: 10%;"></span><input style="width: 90%;height:44px; display: inline-block;" type="text" id="oldPassword" class="form-control" placeholder="当前密码" required autofocus>
+                            </p>
+                            <p>
+                                <span class="glyphicon glyphicon-pencil" style="display: inline-block; width: 10%;"></span><input style="width: 90%;height:44px; display: inline-block;" type="text" id="newPassword1" class="form-control" placeholder="新密码" required>
+                            </p>
+                            <p>
+                                <span class="glyphicon glyphicon-pencil" style="display: inline-block; width: 10%;"></span><input style="width: 90%;height:44px; display: inline-block;" type="text" id="newPassword2" class="form-control" placeholder="再次输入新密码" required>
+                            </p>
+
+                            <div style="width:50%;margin:0 auto 0 auto;"><input class="btn btn-lg btn-warning btn-block" type="submit" id="submitFormInputBtn" value="确定" /></div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+

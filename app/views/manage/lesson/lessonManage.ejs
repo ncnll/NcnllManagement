@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> <%= application_name_cn %> </title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<cmstudio:htmlBase/>
+		<link rel="shortcut icon" type="image/x-icon" href="resources/${icon_name}"/>
+		<link rel="stylesheet" type="text/css" href="/css/basic/lesson/lessonManage.css" />
+		
+		<%- include ../common/jqueryEasyUI.js.ejs %>
+
+		<script type="text/javascript" src="/js/basic/lesson/lessonManage.js"></script>
+	</head>
+	<body>
+		
+ 	    <table id="lessonGrid">
+	    </table>
+
+
+	    <div id="toolbar">
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newForm()">新建</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editForm()">修改</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroySelectedItems()">删除</a>
+	        教程名称:<input id="title" class="easyui-validatebox textbox" >
+			班级分类:<input id="sclassType" name="classType" class="easyui-combobox" data-options="
+		        							valueField: '_id',
+		      								textField: 'name',
+        									editable:false,
+		      								panelHeight:'auto'" />
+			<a href="javascript:void(0)" onclick="select()" class="easyui-linkbutton" iconCls="icon-search">搜索</a>
+	    </div>
+	    <!-- required="true"必填项-->
+	    <div id="dlg" class="easyui-dialog" data-options="closed:'true',modal:true,buttons:'#dlg-buttons'">
+	        <form id="fm" method="post" >
+	            <div class="fitem">
+	                <label>标题：</label>
+	                <input name="title" class="easyui-validatebox" id = "titletxt"  required="true">
+	            </div>
+	            <div class="fitem">
+	                <label>教程内容：</label>
+	                <textarea name="content" id ="content"></textarea>
+	            </div>
+	            <div class="fitem">
+	                <label>购买价格：</label>
+	                <input name="price" id = "price" class="easyui-validatebox">
+	            </div>
+	           <!--  <div class="fitem">
+	                <label>页面图片：</label>
+	                <input name="image" class="easyui-validatebox">
+	            </div> -->
+	            
+	            <div class="fitem">
+	                <label>班级分类：</label>
+			    			<input id="classType" name="classType" class="easyui-combobox" data-options="
+		        							valueField: '_id',
+		      								textField: 'name',
+		      								panelHeight:'auto'
+		      								,editable:false" /><br/>
+	            </div>
+
+	             <div class="fitem">
+			            <label>图片：</label>
+		            	<img src="" width="250px" height="150px" id= "lessonimage">
+	        	</div>
+	        	 <div class="fitem" style="display:none">
+		            	<input name="image" id = "uri" class="easyui-validatebox">
+	        	</div>
+	        	</form>
+	        	<form method="post" enctype="multipart/form-data" action="/vpi/picupload" id ="uplodeimage">
+				<input type="file" name="uploadedPic">
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="uplodeimage()">上传图片</a>
+			</form>
+	    </div>
+	    <div id="dlg-buttons">
+		        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveForm()">保存</a>
+		        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+		</div>
+		
+	</body>
+</html>

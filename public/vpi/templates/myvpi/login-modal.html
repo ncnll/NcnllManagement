@@ -1,0 +1,35 @@
+<!-- Modal -->
+        <div class="modal fade" id="loginModal" ng-controller="loginCtrl" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                        <h4 class="modal-title" id="loginModalLabel">用户登录</h4>
+                    </div>
+                    <div class="modal-body" >
+                        <form class="form-signin" role="form" style="width:80%;margin:0 auto 0 auto;" ng-submit="processForm()" >
+                            <p>
+                                <span class="glyphicon glyphicon-user" style="display: inline-block; width: 10%;"></span><input style="width: 90%;height:44px; display: inline-block;" type="text" id="userNameTxt" class="form-control" placeholder="用户名" required autofocus>
+                            </p>
+                            <p>
+                                <span class="glyphicon glyphicon-pencil" style="display: inline-block; width: 10%;"></span><input style="width: 90%;height:44px; display: inline-block;" type="password" id="passwordTxt" class="form-control" placeholder="密码" required>
+                            </p>
+                           <!--  <p  >
+                                <div style="text-align:center;" ng-hide="loginSuccessfully" id="loginErrorDiv" class="alert" role="alert" ng-class="loginErrorClass">
+                                    <span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;&nbsp;<strong ></strong>
+                                </div>
+                            </p> -->
+                            <!--<label class="checkbox">
+                                <input type="checkbox" value="remember-me"> Remember me
+                            </label>-->
+                            <p style="text-align:center;">
+                                <!-- <a style="cursor:pointer;" ><span class="glyphicon glyphicon-question-sign" style="display: inline-block; width: 10%;"></span>忘记密码</a> -->
+                                <a id="userRegisterBtnLink" style="cursor:pointer;"><span class="glyphicon glyphicon-floppy-open" style="display: inline-block; width: 10%;"></span>注册</a>
+                            </p>
+                            <input class="btn btn-lg btn-primary btn-block" type="submit" id="userLoginBtn" value="登录" />
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>

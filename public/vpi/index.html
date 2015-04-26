@@ -1,0 +1,191 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>微啪</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../vendors/bootstrap/bootstrap-3.2.0/css/bootstrap.css" />
+        <link rel="stylesheet" href="../vendors/humane/themes/original.css" />
+
+        <link rel="shortcut icon" href="/img/ico.ico" type="image/x-icon" />
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="../vendors/bootstrap/bootstrap-3.2.0/js/html5shiv.min.js"></script>
+          <script src="../vendors/bootstrap/bootstrap-3.2.0/js/respond.min.js"></script>
+        <![endif]-->
+        <style type="text/css">
+
+            body{
+
+            }
+
+            .navbar-nav li a{
+                font-size:18px;
+                font-weight:bold;
+            }
+
+            /*#logo_head{
+                background: url("css/logo.png") no-repeat;
+                background-position: center;
+
+            }*/
+
+
+            /**Main page**/
+            #mainPageContainer{
+
+                width: 100%;
+                position:static;
+
+            }
+            #mainPage-leftPic{
+                margin:0;
+                padding: 0;
+                float:left;
+                width: 55%;
+            }
+            #mainPage-leftPic li{
+                margin:0;
+                padding: 0;
+                height:260px;
+                width: 100%;
+                list-style: none;
+            }
+
+            #companyIntroductionDiv{
+                background: url(/img/index/camera.png);
+                width: 100%;
+                height:780px;
+                padding:90px 0 0 10px;
+            }
+
+
+
+            #innerCompanyIntroductionDiv h3{
+                text-indent: 50px;
+            }
+
+            #innerCompanyIntroductionDivUl{
+                list-style: none;
+                paddin-left:10px;
+            }
+
+            #innerCompanyIntroductionDivUl li{
+                font-size:15px;
+                margin-bottom:10px;
+                line-height: 30px;
+
+                text-indent: 25px;
+
+            }
+
+            #downloadApps{
+                margin-top:90px;
+                list-style: none;
+            }
+
+            #downloadApps li{
+                float: right;
+                margin-top:100px;
+                display: inline-block;
+                margin-left: 5px;
+                margin-right:10px;
+            }
+
+            #downloadApps a{
+                font: 0/0 a;
+                height: 65px;
+                width: 203px;
+                background-size: 100%;
+                display: block;
+
+            }
+
+            #downloadApps img{
+                font: 0/0 a;
+                height: 65px;
+                width: 203px;
+            }
+
+
+
+            #contactUsContainer{
+                height: 500px;
+                background: url(/img/index/wobg.png) no-repeat;
+                background-position:center;
+            }
+             #innerContactUsDiv {
+               padding-top: 50px;
+             }
+             #innerContactUsDiv ul{
+                margin-left:200px;
+             }
+
+             #innerContactUsDiv h3{
+                margin-left:200px;
+                font-weight: bold;
+             }
+
+             #innerContactUsDiv li{
+                font-size: 16px;
+                font-weight: bold;
+             }
+        </style>
+
+    </head>
+
+    <body id="htmlBody">
+        <div id="logo_head" style="text-align:center;">
+            <a href="#"> <img src="css/logo.png" style="height:80px;width:300px;"></a>
+        </div>
+        <div id="header">
+            <nav class="navbar navbar-inverse" role="navigation" >
+              <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-nav-collapse">
+                    <span class="sr-only"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <!-- <a class="navbar-brand" style="color:red;" href="#">微啪</a> -->
+                  <a class="navbar-brand active" style="font-weight:bold;" href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;微啪首页&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                </div>
+
+                <div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="header-nav-collapse">
+                    <ul class="nav navbar-nav" id="headerNavBar">
+                        <!-- <li id="headerNavBarIndex"><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;微啪首页&nbsp;&nbsp;&nbsp;&nbsp;</a></li> -->
+                        <li id="headerNavBarTutorial"><a href="#lesson/list">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;教&nbsp;程&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+                        <li id="headerNavBarPicture"><a href="#picture/all">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;图片&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+                        <li id="headerNavBarUploadPicture"><a href="#myvpi/uploadPictures">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;传图&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+                        <li id="headerNavBarContactUs"><a href="#contactUs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;联系我们&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+                    </ul>
+
+                </div><!-- /.navbar-collapse -->
+                </div>
+
+
+              </div><!-- /.container-fluid -->
+
+            </nav>
+        </div>
+        <div id="sidebar">
+        </div>
+        <div id="content" style="width:96%;margin:0 auto 0 auto; padding-right:9px;">
+            <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
+
+        </div>
+
+
+
+        <script data-main="js/config" src="js/libs/require.min.js"></script>
+        <div style="width:100%; text-align: center; height:40px; padding: 10px 0 0 0; margin:10px 0 0 0; line-height:23px; overflow:hidden;">
+            Powered by  雅米科技© 2013-2014  &nbsp;<a href="http://www.njyammy.com" style="text-decoration: none;" target="_blank">http://www.njyammy.com</a>
+        </div>
+
+
+    </body>
+</html>
