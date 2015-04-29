@@ -30,12 +30,12 @@ var backendAuth = [auth.requiresLogin, auth.user.hasAdminTeacherAuthorization]
 
 module.exports = function (app, passport) {
 
-	//后端登陆页面
+    //后端登陆页面
     app.get("/backend/loginIndex", function(req, res){
       res.render("manage/login");
     });
 
-	//后端首页
+    //后端首页
     app.get("/backend/index", backendAuth, function(req, res){
       res.render("manage/index",req.user);
     });
@@ -57,15 +57,15 @@ module.exports = function (app, passport) {
                             ]
                 },*/
                 {
-                    "name":"基础数据管理",
+                    "name":"基础功能管理",
                     "id":1,
                     "children":
                     [
                         {
-                            "name":"班级",
+                            "name":"相机相关",
                             "children":[
                                 {
-                                    "name":"班级分类管理",
+                                    "name":"相机信息管理",
                                     "id":2,
                                     "linkUrl":"/backend/class/classTypeManage"
                                 },{

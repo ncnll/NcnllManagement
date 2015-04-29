@@ -10,8 +10,8 @@ var systemSetting = require('./systemSetting');
  */
 
 var users = require('../app/controllers/manager');
-/*  , articles = require('../app/controllers/articles')
-  , auth = require('./middlewares/authorization')*/
+var cameraCtrl = require('../app/controllers/camera');
+ /*  , auth = require('./middlewares/authorization')*/
 var indexRoute = require("../app/controllers/index");
 var auth = require('./middlewares/authorization');
 
@@ -47,7 +47,7 @@ module.exports = function (app, passport) {
       res.header("Access-Control-Allow-Headers", "X-Requested-With");
       next();
     });
-
+    app.post("/camera/searchList", cameraCtrl.searchList);
     app.get("/hello", indexRoute.index );
     app.get("/indexData",indexRoute.indexData);
    // app.get("/userProducts",indexRoute.userProducts);
