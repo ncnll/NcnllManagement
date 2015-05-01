@@ -1,5 +1,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
+var ObjectIdSchema = Schema.ObjectId;
+var ObjectId = mongoose.Types.ObjectId;
 
 /*a)相机编号（Serial Number CPU唯一编号），二维码录入？
 b)相机配件管理
@@ -11,6 +13,8 @@ g)价格
 h)状态*/
 
 var CameraSchema = new Schema({
+
+   _id:{type:ObjectIdSchema, default: new ObjectId()},
    //相机编号（Serial Number CPU唯一编号）
    serialNumber: {type : String, default : '', trim : true},
    //人类可读数字编号:0000001
@@ -33,28 +37,10 @@ var CameraSchema = new Schema({
 
 
 CameraSchema.statics = {
-   //修改
-  cameraUpdate:function(lesson,res){
-    var id = lesson._id;
-    delete lesson._id;
-    this.update({_id:id},{$set:lesson},{multi: false,upsert:true}, function(err){
-      if(err){
-        res.json({
-          "success":false,
-          "msg":err.error
-        });
-      }else{
-        res.json({
-          "success":true,
-          "_id":id
-        });
-      }
-    });
-  },
-  list: function (options, cb) {
+  queryList: function (options, cb) {
     var criteria = options.criteria || {};
     this.find(criteria)
-      .sort({'code':  "desc"})
+      .sort(options.sortObj)
       .limit(options.rows)
       .skip(options.rows * (options.page-1))
       .exec(cb);

@@ -3,93 +3,56 @@ var mongoose = require('mongoose')
   , utils = require('../../lib/utils')
   , passport = require('passport');
 
+exports.toSearchList = function(req, res){
+  res.render("device/camera/camera",{object_name:"设备相机"});
+};
+
 // Handle cross-domain requests
 exports.searchList = function(req, res) {
-  var rows = req.param("rows");
-  var page = req.param("page");
-  var camera = new CameraModel(req.body);
-  var ct;
-  //查询条件
-  /*var crite = { };
-  if(req.body.code){
-      crite.code={ $eq: req.body.code };
-  }*/
+
   var crite = utils.setCriteriaParam(req.body);
-  crite.rows=rows;
-  crite.page=page;
-  //res.body
-  CameraModel.count(crite, function(err, count){
-    if(err){
+  var sortObj = utils.setSortParam(req.body);
+  CameraModel.count({ serialNumber:  '66'  }, function(errors, count){
+    if(errors){
       res.json({
          "success":false,
-         "message":err.errors
+         "msg":"查询过程中出ddd错！",
+         "error":errors
       });
+      return;
     }
-    ct = count;
-    CameraModel.list(crite, function(err,list){
-      if(err){
-        res.json({"success":false});
-      }
-      res.json({"success":true,
-                "total":ct,
-                "rowsCount":rows,
-                "page":page,
-                "rows":list});
+    CameraModel.queryList({rows:req.body.rows, page:req.body.page, criteria:crite, sort:sortObj}, function(err,list){
+      utils.setQueryListResponse(err, req, res, list, count);
     });
   });
-
 };
 
 exports.add = function (req, res) {
-    var name =   req.body.name;
-    CameraModel.findOne({ name:name,isDeleted:false}, function (err, adventure) {
-        if(!adventure) {
-            var camera = new CameraModel(req.body);
-            //图片名称不能相同
-            camera.save(function (err) {
-                if (err) {
-                    res.json({
-                        "success": false,
-                        "msg": "增加出错"
-                    });
-                } else {
-                    res.json({
-                        "success": true,
-                        "_id": camera._id
-                    });
-                }
-            });
-        }else{
-            res.json({
-                "success":false,
-                "msg":"分类名称已存在"
-            });
-        }
+    delete req.body._id;
+    var camera = new CameraModel(req.body);
+    camera.save(function(err) {
+      console.log(err)
+        utils.setSaveResponse(err, res, camera);
     });
 };
 
 exports.remove = function(req, res){
   var id = req.param("_id");
-  CameraModel.removeById(id, res);
-  //res.json(resp);
+  CameraModel.findOneAndRemove(id, function(err, doc){
+    utils.setSaveResponse(err, res, doc);
+  });
 };
 
 exports.updateById = function(req, res){
-    var name =   req.body.name;
-    CameraModel.findOne({ name:name,isDeleted:false}, function (err, adventure) {
-        if(!adventure){
-            CameraModel.updateCamera(req, res);
-        }else{
-            if(adventure._id==req.body._id){
-                CameraModel.updateCamera(req, res);
-
-            }else{
-                res.json({
+    if(!req.body._id){
+       res.json({
                     "success":false,
-                    "msg":"名称已存在"
+                    "msg":"主键_id不能为空"
                 });
-            }
-        }
+      return;
+    }
+    CameraModel.findOneAndUpdate({ _id:req.body._id},req.body, function (err, obj) {
+      utils.setSaveResponse(err, res, obj);
     });
 
 };

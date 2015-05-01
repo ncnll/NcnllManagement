@@ -47,7 +47,14 @@ module.exports = function (app, passport) {
       res.header("Access-Control-Allow-Headers", "X-Requested-With");
       next();
     });
-    app.post("/camera/searchList", cameraCtrl.searchList);
+    //相机管理
+    app.get("/device/camera/toSearchList", cameraCtrl.toSearchList);
+    app.post("/device/camera/searchList", cameraCtrl.searchList);
+    app.post("/device/camera/save", cameraCtrl.add);
+    app.post("/device/camera/remove", cameraCtrl.remove);
+    app.post("/device/camera/update", cameraCtrl.updateById);
+
+
     app.get("/hello", indexRoute.index );
     app.get("/indexData",indexRoute.indexData);
    // app.get("/userProducts",indexRoute.userProducts);
