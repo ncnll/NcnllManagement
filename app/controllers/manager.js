@@ -105,32 +105,13 @@ exports.create = function (req, res) {
           error:err.errors
         });
       }
-      console.log(req.body.classType);
-
-
-         /* console.log("有错");
-          res.json({
-            "success":false,
-            "msg":"错误"+err
-          });
-        */
-          res.json({
-              success : true,
-              "account_id":user._id,
-              "msg":"注册消息成功"
-          });
-
+      res.json({
+          success : true,
+          "account_id":user._id,
+          "msg":"注册消息成功"
       });
 
-      //};
-      //
-      //
-      // res.json({
-      //    success : true,
-      //    "account_id":user._id,
-      //    "msg":"注册消息成功"
-      // });
-      /*return res.redirect('/')*/
+    });
 
   });
 };

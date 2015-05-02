@@ -1,16 +1,16 @@
 var mongoose = require('mongoose')
-  , CameraModel = mongoose.model('Camera')
+  , CommonModel = mongoose.model('Product')
   , utils = require('../../lib/utils')
   , passport = require('passport');
 
 exports.toSearchList = function(req, res){
-  res.render("device/camera/camera",{object_name:"设备相机"});
+  res.render("product/product/product",{object_name:"产品"});
 };
 
 exports.searchList = function(req, res) {
   var crite = utils.setCriteriaParam(req.body);
   var sortObj = utils.setSortParam(req.body);
-  CameraModel.count(crite, function(errors, count){
+  CommonModel.count(crite, function(errors, count){
     if(errors){
       res.json({
          "success":false,
@@ -19,7 +19,7 @@ exports.searchList = function(req, res) {
       });
       return;
     }
-    CameraModel.queryList({rows:req.body.rows, page:req.body.page, criteria:crite, sort:sortObj}, function(err,list){
+    CommonModel.queryList({rows:req.body.rows, page:req.body.page, criteria:crite, sort:sortObj}, function(err,list){
       utils.setQueryListResponse(err, req, res, list, count);
     });
   });
@@ -27,15 +27,15 @@ exports.searchList = function(req, res) {
 
 exports.add = function (req, res) {
     delete req.body._id;
-    var camera = new CameraModel(req.body);
-    camera.save(function(err) {
-        utils.setSaveResponse(err, res, camera);
+    var commonModel = new CommonModel(req.body);
+    commonModel.save(function(err) {
+        utils.setSaveResponse(err, res, commonModel);
     });
 };
 
 exports.remove = function(req, res){
   var id = req.param("_id");
-  CameraModel.findOneAndRemove(id, function(err, doc){
+  CommonModel.findOneAndRemove(id, function(err, doc){
     utils.setSaveResponse(err, res, doc);
   });
 };
@@ -48,7 +48,7 @@ exports.updateById = function(req, res){
                 });
       return;
     }
-    CameraModel.findOneAndUpdate({ _id:req.body._id},req.body, function (err, obj) {
+    CommonModel.findOneAndUpdate({ _id:req.body._id},req.body, function (err, obj) {
       utils.setSaveResponse(err, res, obj);
     });
 

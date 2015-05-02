@@ -11,6 +11,7 @@ var systemSetting = require('./systemSetting');
 
 var users = require('../app/controllers/manager');
 var cameraCtrl = require('../app/controllers/camera');
+var productCtrl = require('../app/controllers/product');
  /*  , auth = require('./middlewares/authorization')*/
 var indexRoute = require("../app/controllers/index");
 var auth = require('./middlewares/authorization');
@@ -53,6 +54,13 @@ module.exports = function (app, passport) {
     app.post("/device/camera/save", cameraCtrl.add);
     app.post("/device/camera/remove", cameraCtrl.remove);
     app.post("/device/camera/update", cameraCtrl.updateById);
+
+
+    app.get("/product/product/toSearchList", productCtrl.toSearchList);
+    app.post("/product/product/searchList", productCtrl.searchList);
+    app.post("/product/product/save", productCtrl.add);
+    app.post("/product/product/remove", productCtrl.remove);
+    app.post("/product/product/update", productCtrl.updateById);
 
 
     app.get("/hello", indexRoute.index );
