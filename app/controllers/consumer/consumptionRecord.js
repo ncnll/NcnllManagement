@@ -1,10 +1,10 @@
 var mongoose = require('mongoose')
-  , CommonModel = mongoose.model('{{config.firstNameCapital}}')
-  , utils = require('../../lib/utils')
+  , CommonModel = mongoose.model('ConsumptionRecord')
+  , utils = require('../../../lib/utils')
   , passport = require('passport');
 
 exports.toSearchList = function(req, res){
-  res.render("{{ config.path }}/{{ config.name }}",{object_name:"{{ config.cnName }}"});
+  res.render("consumer/consumptionRecord",{object_name:"消费记录管理"});
 };
 
 exports.searchList = function(req, res) {

@@ -1,18 +1,21 @@
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+/*********************************************************************/
+/****************************产品Product******************************/
+/*********************************************************************/
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 var ObjectIdSchema = Schema.ObjectId;
 var ObjectId = mongoose.Types.ObjectId;
 
 /*
-i.所属项目id : projectId
-ii.项目名称：projectName
-iii.产品名称：name
-iv.产量:output
-v.单位：unit
-vi.产品特点描述: description
-vii.产品分类id：productTypeId
-viii.产品分类名称: productTypeName
-ix.生产日期：productDate
+  i.所属项目id : projectId
+  ii.项目名称：projectName
+  iii.产品名称：name
+  iv.产量:output
+  v.单位：unit
+  vi.产品特点描述: description
+  vii.产品分类id：productTypeId
+  viii.产品分类名称: productTypeName
+  ix.生产日期：productDate
 */
 
 var ProductSchema = new Schema({

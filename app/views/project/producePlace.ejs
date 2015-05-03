@@ -63,12 +63,12 @@
         jQuery.ajaxSetup({ cache: false });
         //Load grid
         $("#dataGrid").datagrid({
-            url:'/{{ config.path }}/{{ config.name }}/searchList',
+            url:'/project/producePlace/searchList',
             method:'POST',
             toolbar:'#toolbar',
             pagination:true,
             collapsible:true,
-            title:"{{ config.cnName }}列表",
+            title:"生产地点列表",
             rownumbers:true,
             queryParams:{userrole:1},
             loadFilter:function(data){
@@ -98,9 +98,11 @@
             pageList:[10,20,30,40,50],
             columns:[[
                       //{field:'ck', checkbox:true},
-                      {{#keyValues}}
-                        {field:'{{name}}', title:'{{comment}}', width:120},
-                      {{/keyValues}}
+                        {field:'location', title:'生产点地址', width:120},
+                        {field:'personInChargeName', title:'负责人姓名', width:120},
+                        {field:'personInChargeId', title:'负责人ID', width:120},
+                        {field:'deviceDescription', title:'生产设备描述', width:120},
+                        {field:'description', title:'生产点描述', width:120},
                       {field:'_id', title:'编号', hidden:true}
             ]],
             onLoadError: function(msge){
@@ -138,7 +140,7 @@
           $('#dlg').dialog('open').dialog('setTitle','<%= object_name %>新增');
           $('#fm').form('clear');
           $('#usernameId').removeAttr('disabled');
-          url = '/{{ config.path }}/{{ config.name }}/save';
+          url = '/project/producePlace/save';
       }
       /**Open edit form **/
       function editForm(){
@@ -147,7 +149,7 @@
           if (rowsLength>0){
               $('#dlg').dialog('open').dialog('setTitle','<%= object_name %>修改');
               $('#fm').form('load',selectedRow[0]);
-              url = '/{{ config.path }}/{{ config.name }}/update';
+              url = '/project/producePlace/update';
           }else{
             $.messager.show({    // show error message
                   title: '提示<span style="color:red;">!</span>',
@@ -204,7 +206,7 @@
           if (rowsLength>0){
               $.messager.confirm('提示信息','确定删除该行？',function(r){
                   if (r){
-                    $.post('/{{ config.path }}/{{ config.name }}/remove', {_id:rows[0]._id}, function(result){
+                    $.post('/project/producePlace/remove', {_id:rows[0]._id}, function(result){
                           if(result.success){
                               $.messager.show({
                                   title: '提示<span style="color:red;">!</span>',
@@ -273,12 +275,26 @@
 
       <div id="dlg" class="easyui-dialog" data-options="closed:'true',modal:true,buttons:'#dlg-buttons'">
           <form id="fm" method="post" >
-            {{#keyValues}}
                 <div class="fitem">
-                    <label>{{comment}}</label>
-                    <input name="{{name}}" id="{{name}}_input" class="easyui-validatebox" required="true">
+                    <label>生产点地址</label>
+                    <input name="location" id="location_input" class="easyui-validatebox" required="true">
                 </div>
-            {{/keyValues}}
+                <div class="fitem">
+                    <label>负责人姓名</label>
+                    <input name="personInChargeName" id="personInChargeName_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>负责人ID</label>
+                    <input name="personInChargeId" id="personInChargeId_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>生产设备描述</label>
+                    <input name="deviceDescription" id="deviceDescription_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>生产点描述</label>
+                    <input name="description" id="description_input" class="easyui-validatebox" required="true">
+                </div>
               <input type="hidden" name="_id" id="_id">
           </form>
       </div>

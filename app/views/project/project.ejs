@@ -63,12 +63,12 @@
         jQuery.ajaxSetup({ cache: false });
         //Load grid
         $("#dataGrid").datagrid({
-            url:'/{{ config.path }}/{{ config.name }}/searchList',
+            url:'/project/project/searchList',
             method:'POST',
             toolbar:'#toolbar',
             pagination:true,
             collapsible:true,
-            title:"{{ config.cnName }}列表",
+            title:"生产项目列表",
             rownumbers:true,
             queryParams:{userrole:1},
             loadFilter:function(data){
@@ -98,9 +98,25 @@
             pageList:[10,20,30,40,50],
             columns:[[
                       //{field:'ck', checkbox:true},
-                      {{#keyValues}}
-                        {field:'{{name}}', title:'{{comment}}', width:120},
-                      {{/keyValues}}
+                        {field:'name', title:'项目名称', width:120},
+                        {field:'placeId', title:'生产点编号', width:120},
+                        {field:'producePlace', title:'项目生产地点', width:120},
+                        {field:'producePlaceId', title:'项目地点ID', width:120},
+                        {field:'gps', title:'经纬度', width:120},
+                        {field:'description', title:'项目描述', width:120},
+                        {field:'startTime', title:'startTime', width:120},
+                        {field:'preEndTime', title:'项目预估结束时间', width:120},
+                        {field:'endTime', title:'项目实际结束时间', width:120},
+                        {field:'type', title:'项目类型', width:120},
+                        {field:'cameraIds', title:'相机IDs', width:120},
+                        {field:'preContained', title:'前一环节项目产品纳入量', width:120},
+                        {field:'nextOutput', title:'下一个环节项目纳出', width:120},
+                        {field:'preProjects', title:'关联的前面所有项目编号', width:120},
+                        {field:'mainProducerId', title:'主要负责人ID', width:120},
+                        {field:'mainProducerName', title:'主要负责人名称', width:120},
+                        {field:'producers', title:'次要负责人', width:120},
+                        {field:'actualAmount', title:'生产总量', width:120},
+                        {field:'estimateAmount', title:'生产预估量', width:120},
                       {field:'_id', title:'编号', hidden:true}
             ]],
             onLoadError: function(msge){
@@ -138,7 +154,7 @@
           $('#dlg').dialog('open').dialog('setTitle','<%= object_name %>新增');
           $('#fm').form('clear');
           $('#usernameId').removeAttr('disabled');
-          url = '/{{ config.path }}/{{ config.name }}/save';
+          url = '/project/project/save';
       }
       /**Open edit form **/
       function editForm(){
@@ -147,7 +163,7 @@
           if (rowsLength>0){
               $('#dlg').dialog('open').dialog('setTitle','<%= object_name %>修改');
               $('#fm').form('load',selectedRow[0]);
-              url = '/{{ config.path }}/{{ config.name }}/update';
+              url = '/project/project/update';
           }else{
             $.messager.show({    // show error message
                   title: '提示<span style="color:red;">!</span>',
@@ -204,7 +220,7 @@
           if (rowsLength>0){
               $.messager.confirm('提示信息','确定删除该行？',function(r){
                   if (r){
-                    $.post('/{{ config.path }}/{{ config.name }}/remove', {_id:rows[0]._id}, function(result){
+                    $.post('/project/project/remove', {_id:rows[0]._id}, function(result){
                           if(result.success){
                               $.messager.show({
                                   title: '提示<span style="color:red;">!</span>',
@@ -273,12 +289,82 @@
 
       <div id="dlg" class="easyui-dialog" data-options="closed:'true',modal:true,buttons:'#dlg-buttons'">
           <form id="fm" method="post" >
-            {{#keyValues}}
                 <div class="fitem">
-                    <label>{{comment}}</label>
-                    <input name="{{name}}" id="{{name}}_input" class="easyui-validatebox" required="true">
+                    <label>项目名称</label>
+                    <input name="name" id="name_input" class="easyui-validatebox" required="true">
                 </div>
-            {{/keyValues}}
+                <div class="fitem">
+                    <label>生产点编号</label>
+                    <input name="placeId" id="placeId_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>项目生产地点</label>
+                    <input name="producePlace" id="producePlace_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>项目地点ID</label>
+                    <input name="producePlaceId" id="producePlaceId_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>经纬度</label>
+                    <input name="gps" id="gps_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>项目描述</label>
+                    <input name="description" id="description_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>startTime</label>
+                    <input name="startTime" id="startTime_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>项目预估结束时间</label>
+                    <input name="preEndTime" id="preEndTime_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>项目实际结束时间</label>
+                    <input name="endTime" id="endTime_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>项目类型</label>
+                    <input name="type" id="type_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>相机IDs</label>
+                    <input name="cameraIds" id="cameraIds_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>前一环节项目产品纳入量</label>
+                    <input name="preContained" id="preContained_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>下一个环节项目纳出</label>
+                    <input name="nextOutput" id="nextOutput_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>关联的前面所有项目编号</label>
+                    <input name="preProjects" id="preProjects_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>主要负责人ID</label>
+                    <input name="mainProducerId" id="mainProducerId_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>主要负责人名称</label>
+                    <input name="mainProducerName" id="mainProducerName_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>次要负责人</label>
+                    <input name="producers" id="producers_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>生产总量</label>
+                    <input name="actualAmount" id="actualAmount_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>生产预估量</label>
+                    <input name="estimateAmount" id="estimateAmount_input" class="easyui-validatebox" required="true">
+                </div>
               <input type="hidden" name="_id" id="_id">
           </form>
       </div>

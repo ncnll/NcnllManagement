@@ -37,6 +37,9 @@ exports.config = config;*/
 
 /************************CONFIG INFO END**********************/
 
+//console.log(ejsTemplate)
+var modelNames = ['product', 'project', 'camera', 'consumptionRecord', 'imageInfo', 'producePlace', 'productType'];
+var modelPath = "./app/models/";
 
 
 //Load templates
@@ -59,16 +62,14 @@ if (!fs.existsSync("./autogenerate/generateddemo/ejs/")){
 }
 
 
-
-//console.log(ejsTemplate)
-var modelNames = ['product'];
-var modelPath = "./app/models/";
-
 modelNames.forEach(function(modelName){
   var modelObj = require(modelPath+modelName);
   //Generate controllerTmpelate
   var controllerTmpelateOutput = Mustache.render(controllerTmpelate, modelObj);
-  var controllerPath = "./autogenerate/generateddemo/controller/"+modelName+"Ctrl.js";
+  if (!fs.existsSync("./autogenerate/generateddemo/controller/"+modelObj.config.path+"/")){
+      fs.mkdirSync("./autogenerate/generateddemo/controller/"+modelObj.config.path+"/");
+  }
+  var controllerPath = "./autogenerate/generateddemo/controller/"+modelObj.config.path+"/"+modelName+".js";
   fs.writeFile(controllerPath, controllerTmpelateOutput, function(err) {
       if(err) {
         console.log("error----"+controllerPath);
@@ -78,7 +79,10 @@ modelNames.forEach(function(modelName){
   });
   //Generate routeTemplate
   var routeTemplateOutput = Mustache.render(routeTemplate, modelObj);
-  var routePath = "./autogenerate/generateddemo/route/"+modelName+"Route.js";
+  if (!fs.existsSync("./autogenerate/generateddemo/route/"+modelObj.config.path+"/")){
+          fs.mkdirSync("./autogenerate/generateddemo/route/"+modelObj.config.path+"/");
+      }
+  var routePath = "./autogenerate/generateddemo/route/"+modelObj.config.path+"/"+modelName+".js";
   fs.writeFile(routePath, routeTemplateOutput, function(err) {
       if(err) {
         console.log("error----"+routePath);
@@ -88,7 +92,10 @@ modelNames.forEach(function(modelName){
   });
   //Generate ejsTemplate
   var ejsTemplateOutput = Mustache.render(ejsTemplate, modelObj);
-  var ejsPath = "./autogenerate/generateddemo/ejs/"+modelName+".ejs";
+  if (!fs.existsSync("./autogenerate/generateddemo/ejs/"+modelObj.config.path+"/")){
+    fs.mkdirSync("./autogenerate/generateddemo/ejs/"+modelObj.config.path+"/");
+  }
+  var ejsPath = "./autogenerate/generateddemo/ejs/"+modelObj.config.path+"/"+modelName+".ejs";
   fs.writeFile(ejsPath, ejsTemplateOutput, function(err) {
       if(err) {
         console.log("error----"+ejsPath);

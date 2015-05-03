@@ -1,16 +1,21 @@
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+/*********************************************************************/
+/***********************相机信息Camera*********************/
+/*********************************************************************/
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 var ObjectIdSchema = Schema.ObjectId;
 var ObjectId = mongoose.Types.ObjectId;
 
-/*a)相机编号（Serial Number CPU唯一编号），二维码录入？
-b)相机配件管理
-c)相机数字编码CameraId  000000001
-d)相机型号
-e)使用项目记录
-f)购买日期
-g)价格
-h)状态*/
+/*
+  a)相机编号（Serial Number CPU唯一编号），二维码录入？
+  b)相机配件管理
+  c)相机数字编码CameraId  000000001
+  d)相机型号
+  e)使用项目记录
+  f)购买日期
+  g)价格
+  h)状态
+*/
 
 var CameraSchema = new Schema({
 
@@ -48,3 +53,31 @@ CameraSchema.statics = {
 };
 
 mongoose.model('Camera', CameraSchema);
+
+/**--------------------------------------------------------------------------**/
+/********手动配置字段Start*******/
+var ObjectSchema = CameraSchema;//Schema upside
+var path = "project";//the path to of object
+var endName = "camera";//the name of object
+var cnName = "相机信息";//the chinese name of object
+/********手动配置字段End*******/
+
+var firstNameCapital = endName.charAt(0).toUpperCase()+endName.slice(1);
+var config={
+  path:path,
+  name:endName,
+  firstNameCapital:firstNameCapital,
+  shema:ObjectSchema,
+  cnName:cnName
+};
+
+//Get properties key value
+var keyValues=[];
+for(var prop in ObjectSchema.tree){
+  if(prop=="__v" || prop=="_id" || prop=="id"){
+    continue;
+  }
+  keyValues.push({name:prop, comment:ObjectSchema.tree[prop].comment, type:ObjectSchema.tree[prop].type});
+}
+exports.keyValues = keyValues;
+exports.config = config;

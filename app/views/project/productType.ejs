@@ -63,12 +63,12 @@
         jQuery.ajaxSetup({ cache: false });
         //Load grid
         $("#dataGrid").datagrid({
-            url:'/{{ config.path }}/{{ config.name }}/searchList',
+            url:'/project/productType/searchList',
             method:'POST',
             toolbar:'#toolbar',
             pagination:true,
             collapsible:true,
-            title:"{{ config.cnName }}列表",
+            title:"产品类型列表",
             rownumbers:true,
             queryParams:{userrole:1},
             loadFilter:function(data){
@@ -98,9 +98,13 @@
             pageList:[10,20,30,40,50],
             columns:[[
                       //{field:'ck', checkbox:true},
-                      {{#keyValues}}
-                        {field:'{{name}}', title:'{{comment}}', width:120},
-                      {{/keyValues}}
+                        {field:'parentId', title:'父级ID', width:120},
+                        {field:'nodeType', title:'节点类型', width:120},
+                        {field:'description', title:'产品描述', width:120},
+                        {field:'components', title:'组成成分', width:120},
+                        {field:'expireTime', title:'保质期(天)', width:120},
+                        {field:'images', title:'产品图片集合', width:120},
+                        {field:'standardId', title:'产品标准ID', width:120},
                       {field:'_id', title:'编号', hidden:true}
             ]],
             onLoadError: function(msge){
@@ -138,7 +142,7 @@
           $('#dlg').dialog('open').dialog('setTitle','<%= object_name %>新增');
           $('#fm').form('clear');
           $('#usernameId').removeAttr('disabled');
-          url = '/{{ config.path }}/{{ config.name }}/save';
+          url = '/project/productType/save';
       }
       /**Open edit form **/
       function editForm(){
@@ -147,7 +151,7 @@
           if (rowsLength>0){
               $('#dlg').dialog('open').dialog('setTitle','<%= object_name %>修改');
               $('#fm').form('load',selectedRow[0]);
-              url = '/{{ config.path }}/{{ config.name }}/update';
+              url = '/project/productType/update';
           }else{
             $.messager.show({    // show error message
                   title: '提示<span style="color:red;">!</span>',
@@ -204,7 +208,7 @@
           if (rowsLength>0){
               $.messager.confirm('提示信息','确定删除该行？',function(r){
                   if (r){
-                    $.post('/{{ config.path }}/{{ config.name }}/remove', {_id:rows[0]._id}, function(result){
+                    $.post('/project/productType/remove', {_id:rows[0]._id}, function(result){
                           if(result.success){
                               $.messager.show({
                                   title: '提示<span style="color:red;">!</span>',
@@ -273,12 +277,34 @@
 
       <div id="dlg" class="easyui-dialog" data-options="closed:'true',modal:true,buttons:'#dlg-buttons'">
           <form id="fm" method="post" >
-            {{#keyValues}}
                 <div class="fitem">
-                    <label>{{comment}}</label>
-                    <input name="{{name}}" id="{{name}}_input" class="easyui-validatebox" required="true">
+                    <label>父级ID</label>
+                    <input name="parentId" id="parentId_input" class="easyui-validatebox" required="true">
                 </div>
-            {{/keyValues}}
+                <div class="fitem">
+                    <label>节点类型</label>
+                    <input name="nodeType" id="nodeType_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>产品描述</label>
+                    <input name="description" id="description_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>组成成分</label>
+                    <input name="components" id="components_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>保质期(天)</label>
+                    <input name="expireTime" id="expireTime_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>产品图片集合</label>
+                    <input name="images" id="images_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>产品标准ID</label>
+                    <input name="standardId" id="standardId_input" class="easyui-validatebox" required="true">
+                </div>
               <input type="hidden" name="_id" id="_id">
           </form>
       </div>

@@ -11,7 +11,12 @@ var systemSetting = require('./systemSetting');
 
 var users = require('../app/controllers/manager');
 var cameraCtrl = require('../app/controllers/camera');
-var productCtrl = require('../app/controllers/product');
+var consumptionRecordCtrl = require('../app/controllers/consumer/consumptionRecord');
+var imageInfoCtrl = require('../app/controllers/project/imageInfo');
+var producePlaceCtrl = require('../app/controllers/project/producePlace');
+var productCtrl = require('../app/controllers/project/product');
+var productTypeCtrl = require('../app/controllers/project/productType');
+var projectCtrl = require('../app/controllers/project/project');
  /*  , auth = require('./middlewares/authorization')*/
 var indexRoute = require("../app/controllers/index");
 var auth = require('./middlewares/authorization');
@@ -56,11 +61,43 @@ module.exports = function (app, passport) {
     app.post("/device/camera/update", cameraCtrl.updateById);
 
 
-    app.get("/product/product/toSearchList", productCtrl.toSearchList);
-    app.post("/product/product/searchList", productCtrl.searchList);
-    app.post("/product/product/save", productCtrl.add);
-    app.post("/product/product/remove", productCtrl.remove);
-    app.post("/product/product/update", productCtrl.updateById);
+  //消费记录管理管理
+app.get("/consumer/consumptionRecord/toSearchList", consumptionRecordCtrl.toSearchList);
+app.post("/consumer/consumptionRecord/searchList", consumptionRecordCtrl.searchList);
+app.post("/consumer/consumptionRecord/save", consumptionRecordCtrl.add);
+app.post("/consumer/consumptionRecord/remove", consumptionRecordCtrl.remove);
+app.post("/consumer/consumptionRecord/update", consumptionRecordCtrl.updateById);
+ //图片信息管理
+app.get("/project/imageInfo/toSearchList", imageInfoCtrl.toSearchList);
+app.post("/project/imageInfo/searchList", imageInfoCtrl.searchList);
+app.post("/project/imageInfo/save", imageInfoCtrl.add);
+app.post("/project/imageInfo/remove", imageInfoCtrl.remove);
+app.post("/project/imageInfo/update", imageInfoCtrl.updateById);
+ //生产地点管理
+app.get("/project/producePlace/toSearchList", producePlaceCtrl.toSearchList);
+app.post("/project/producePlace/searchList", producePlaceCtrl.searchList);
+app.post("/project/producePlace/save", producePlaceCtrl.add);
+app.post("/project/producePlace/remove", producePlaceCtrl.remove);
+app.post("/project/producePlace/update", producePlaceCtrl.updateById);
+ //产品管理
+app.get("/project/product/toSearchList", productCtrl.toSearchList);
+app.post("/project/product/searchList", productCtrl.searchList);
+app.post("/project/product/save", productCtrl.add);
+app.post("/project/product/remove", productCtrl.remove);
+app.post("/project/product/update", productCtrl.updateById);
+ //产品类型管理
+app.get("/project/productType/toSearchList", productTypeCtrl.toSearchList);
+app.post("/project/productType/searchList", productTypeCtrl.searchList);
+app.post("/project/productType/save", productTypeCtrl.add);
+app.post("/project/productType/remove", productTypeCtrl.remove);
+app.post("/project/productType/update", productTypeCtrl.updateById);
+
+ //生产项目管理
+app.get("/project/project/toSearchList", projectCtrl.toSearchList);
+app.post("/project/project/searchList", projectCtrl.searchList);
+app.post("/project/project/save", projectCtrl.add);
+app.post("/project/project/remove", projectCtrl.remove);
+app.post("/project/project/update", projectCtrl.updateById);
 
 
     app.get("/hello", indexRoute.index );

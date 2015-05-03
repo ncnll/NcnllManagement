@@ -1,10 +1,10 @@
 var mongoose = require('mongoose')
-  , CommonModel = mongoose.model('{{config.firstNameCapital}}')
-  , utils = require('../../lib/utils')
+  , CommonModel = mongoose.model('Camera')
+  , utils = require('../../../lib/utils')
   , passport = require('passport');
 
 exports.toSearchList = function(req, res){
-  res.render("{{ config.path }}/{{ config.name }}",{object_name:"{{ config.cnName }}"});
+  res.render("project/camera",{object_name:"相机信息"});
 };
 
 exports.searchList = function(req, res) {

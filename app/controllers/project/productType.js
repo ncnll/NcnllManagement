@@ -1,10 +1,10 @@
 var mongoose = require('mongoose')
-  , CommonModel = mongoose.model('{{config.firstNameCapital}}')
-  , utils = require('../../lib/utils')
+  , CommonModel = mongoose.model('ProductType')
+  , utils = require('../../../lib/utils')
   , passport = require('passport');
 
 exports.toSearchList = function(req, res){
-  res.render("{{ config.path }}/{{ config.name }}",{object_name:"{{ config.cnName }}"});
+  res.render("project/productType",{object_name:"产品类型"});
 };
 
 exports.searchList = function(req, res) {
