@@ -18,7 +18,7 @@ var ObjectId = mongoose.Types.ObjectId;
 
 var ProductTypeSchema = new Schema({
 
-  _id:{type:ObjectIdSchema, default: new ObjectId()},
+  //_id:{type:ObjectIdSchema, default: new ObjectId()},
   // a)父级ID：parentId
   parentId:{type:String, default:"", comment:"父级ID"},
   // b)节点类型：叶子节点2，子树1，根节点0

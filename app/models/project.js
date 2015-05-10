@@ -33,7 +33,7 @@ var ObjectId = mongoose.Types.ObjectId;
 
 var ProjectSchema = new Schema({
   // ii.项目编号 id
-  _id:{type:ObjectIdSchema, default: new ObjectId()},
+  //_id:{type:ObjectIdSchema, default: new ObjectId()},
   // i.项目名称 name
   name:{type:String, default:'', comment:"项目名称"},
   // iii.生产点编号: placeId  （临时的地点，用生产者单独的生产点编号，比如一个人 有十块分散的土地，这十块土地算一个生产点。详细在项目地点里面写明。）

@@ -17,7 +17,7 @@ var ObjectId = mongoose.Types.ObjectId;
 
 var ProducePlaceSchema = new Schema({
   // a)生产点ID: id
-   _id:{type:ObjectIdSchema, default: new ObjectId()},
+   //_id:{type:ObjectIdSchema, default: new ObjectId()},
 
   // b)生产点地址:location
   location:{type:String, default:"", comment:"生产点地址"},

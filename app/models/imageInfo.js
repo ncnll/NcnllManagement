@@ -26,7 +26,7 @@ var ObjectId = mongoose.Types.ObjectId;
 */
 
 var ImageInfoSchema = new Schema({
-  _id:{type:ObjectIdSchema, default: new ObjectId()},
+  //_id:{type:ObjectIdSchema, default: new ObjectId()},
   // a)图片存储(云空间)
 //     i.图片口令验证 :token
 //     ii.图片裁剪存储（缩略图）:

@@ -19,7 +19,7 @@ var ObjectId = mongoose.Types.ObjectId;
 
 var CameraSchema = new Schema({
 
-   _id:{type:ObjectIdSchema, default: new ObjectId()},
+   //_id:{type:ObjectIdSchema, default: new ObjectId()},
    //相机编号（Serial Number CPU唯一编号）
    serialNumber: {type : String, default : '', trim : true, comment:"相机编号"},
    //人类可读数字编号:0000001

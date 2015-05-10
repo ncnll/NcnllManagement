@@ -51,7 +51,11 @@ var models_path = __dirname + '/app/models'
 fs.readdirSync(models_path).forEach(function (file) {
   if (~file.indexOf('.js')) require(models_path + '/' + file)
 })
-
+//Front models
+var models_path = __dirname + '/app/models/front'
+fs.readdirSync(models_path).forEach(function (file) {
+  if (~file.indexOf('.js')) require(models_path + '/' + file)
+})
 
 
 // bootstrap passport config

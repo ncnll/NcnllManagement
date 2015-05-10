@@ -62,84 +62,72 @@ module.exports = function (app, passport) {
                     "children":
                     [
                         {
-                            "name":"相机相关",
+                            "name":"项目相关",
                             "children":[
                                 {
+                                    "name":"生产项目管理",
+                                    "id":11,
+                                    "linkUrl":"/project/project/toSearchList"
+                                },{
                                     "name":"相机信息管理",
-                                    "id":2,
-                                    "linkUrl":"/backend/class/classTypeManage"
+                                    "id":12,
+                                    "linkUrl":"/device/camera/toSearchList"
                                 },{
-                                    "name":"班级管理",
-                                    "id":3,
-                                    "linkUrl":"/backend/class/classManage"
-                                }
-                            ]
-                        },{
-                            "name":"学员",
-                            "id":4,
-                            "children":
-                            [
-                                {
-                                    "name":"学员报班管理",
+                                    "name":"上传图片管理",
                                     "id":13,
-                                    "linkUrl":"/backend/student/studentManage"
-
+                                    "linkUrl":"/project/imageInfo/toSearchList"
                                 },{
-                                "name":"学员管理",
-                                "id":13,
-                                "linkUrl":"/backend/student/student"
-
-                            },{
-                                "name":"学员审核",
-                                "id":13,
-                                "linkUrl":"/backend/student/stuStatus"
-
-                            }
-
-
+                                    "name":"产品类型管理",
+                                    "id":14,
+                                    "linkUrl":"/project/productType/toSearchList"
+                                },{
+                                    "name":"产品管理",
+                                    "id":15,
+                                    "linkUrl":"/project/product/toSearchList"
+                                },{
+                                    "name":"生产点管理",
+                                    "id":16,
+                                    "linkUrl":"/project/producePlace/toSearchList"
+                                }
                             ]
                         },{
-                            "name":"教师",
+                            "name":"消费者相关",
                             "id":4,
                             "children":
                             [
                                 {
-                                    "name":"教师管理",
-                                    "id":12,
-                                    "linkUrl":"/backend/teacher/index"
+                                    "name":"消费记录",
+                                    "id":13,
+                                    "linkUrl":"/consumer/consumptionRecord/toSearchList"
 
                                 }
 
                             ]
-                            //"linkUrl":"/backend/student/studentManage"
                         },{
-                            "name":"教程",
-                            "id":5,
-                            "linkUrl":"/backend/lesson/lessonManage",
+                            "name":"商城管理",
                             "children":
                             [
                                 {
-                                    "name":"教程管理",
-                                    "id":12,
-                                    "linkUrl":"/backend/lesson/lessonManage"
+                                    "name":"用户信息管理",
+                                    "linkUrl":"/front/user/toSearchList"
+
+                                },
+                                {
+                                    "name":"产品信息管理",
+                                    "linkUrl":"/front/productInfo/toSearchList"
+
+                                },
+                                {
+                                    "name":"产品分类管理",
+                                    "linkUrl":"/front/category/toSearchList"
+
+                                },
+                                {
+                                    "name":"个人品牌管理",
+                                    "linkUrl":"/front/brand/toSearchList"
 
                                 }
 
-
-                            ]
-                        },{
-                            "name":"作业、图片管理",
-                            "id":6,
-                            "children":[
-                                /*{
-                                    "name":"图片分类管理",
-                                    "id":7,
-                                    "linkUrl":"/backend/picture/pictureTypeManage"
-                                },*/{
-                                    "name":"图片审核",
-                                    "id":9,
-                                    "linkUrl":"/backend/pictures/pictureManage"
-                                }
                             ]
                         }
 
@@ -148,75 +136,6 @@ module.exports = function (app, passport) {
             ]);
         }
 
-        if(req.user.userrole==1){
-            res.json([
-               {
-                    "name":"基础数据管理",
-                    "id":1,
-                    "children":
-                    [
-                        {
-                            "name":"班级",
-                            "children":[
-                                {
-                                    "name":"班级分类管理",
-                                    "id":2,
-                                    "linkUrl":"/backend/class/classTypeManage"
-                                },{
-                                    "name":"班级管理",
-                                    "id":3,
-                                    "linkUrl":"/backend/class/classManage"
-                                }
-                            ]
-                        },{
-                            "name":"学员",
-                            "id":4,
-                            "children":
-                            [
-                                {
-                                    "name":"学员管理",
-                                    "id":13,
-                                    "linkUrl":"/backend/student/studentManage"
-
-                                }
-
-
-                            ]
-                        },{
-                            "name":"教程",
-                            "id":5,
-                            "linkUrl":"/backend/lesson/lessonManage",
-                            "children":
-                            [
-                                {
-                                    "name":"教程管理",
-                                    "id":12,
-                                    "linkUrl":"/backend/lesson/lessonManage"
-
-                                }
-
-
-                            ]
-                        },{
-                            "name":"作业、图片管理",
-                            "id":6,
-                            "children":[
-                                /*{
-                                    "name":"图片分类管理",
-                                    "id":7,
-                                    "linkUrl":"/backend/picture/pictureTypeManage"
-                                },*/{
-                                    "name":"图片审核",
-                                    "id":9,
-                                    "linkUrl":"/backend/pictures/pictureManage"
-                                }
-                            ]
-                        }
-
-                    ]
-                }
-            ]);
-        }
 
     });
 

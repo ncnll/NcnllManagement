@@ -19,7 +19,7 @@ var ObjectId = mongoose.Types.ObjectId;
 */
 
 var ProductSchema = new Schema({
-   _id:{type:ObjectIdSchema, default: new ObjectId()},
+   //_id:{type:ObjectIdSchema, default: new ObjectId()},
    //产品名称
    name: {type : String, default:0, comment:"产品名称"},
    //所属项目ID

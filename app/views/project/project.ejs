@@ -23,7 +23,7 @@
        .fitem label{
             text-align:right;
            display:inline-block;
-           width:100px;
+           width:150px;
            font-weight:bold;
        }
 
@@ -32,15 +32,19 @@
         margin-right:10px 30px 0 0 ;
        }
 
+       .fitem input{
+          width:230px;
+       }
+
        .fitem textarea{
           margin:5px 0 0 17%;
-          width:200px;
+          width:300px;
           height:60px;
           display:block;
        }
 
        #dlg{
-        width:350px;
+        width:500px;
         height:280px;
        }
 
@@ -98,6 +102,7 @@
             pageList:[10,20,30,40,50],
             columns:[[
                       //{field:'ck', checkbox:true},
+                        {field:'_id', title:'ID', width:120},
                         {field:'name', title:'项目名称', width:120},
                         {field:'placeId', title:'生产点编号', width:120},
                         {field:'producePlace', title:'项目生产地点', width:120},
@@ -116,8 +121,8 @@
                         {field:'mainProducerName', title:'主要负责人名称', width:120},
                         {field:'producers', title:'次要负责人', width:120},
                         {field:'actualAmount', title:'生产总量', width:120},
-                        {field:'estimateAmount', title:'生产预估量', width:120},
-                      {field:'_id', title:'编号', hidden:true}
+                        {field:'estimateAmount', title:'生产预估量', width:120}
+
             ]],
             onLoadError: function(msge){
                 $.messager.alert('错误信息','服务器连接已断开或服务器内部错误！','error');

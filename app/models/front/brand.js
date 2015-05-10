@@ -1,40 +1,30 @@
 /*********************************************************************/
-/***********************消费记录ConsumptionRecord*********************/
+/****************************生产者品牌Brand************************/
 /*********************************************************************/
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectIdSchema = Schema.ObjectId;
 var ObjectId = mongoose.Types.ObjectId;
 
-/*
-  a)消费记录ID
-  b)消费者ID:consumerId（加密过）
-  c)产品ID:productId
-  d)数量：amount {}
-  e)购买日期：boughtTime
-  f)金额:money
-*/
-
-var ConsumptionRecordSchema = new Schema({
-  // a)消费记录ID
-  //_id:{type:ObjectIdSchema, default: new ObjectId()},
-
-  // b)消费者ID:consumerId（加密过）
-  consumerId:{type:String, default:"", comment:"消费者ID"},
-  // c)产品ID:productId
-  productId:{type:String, default:"", comment:"消费者ID"},
-  // d)数量：amount {}
-  amount :{type:String, default:"", comment:"消费者ID"},
-  // e)购买日期：boughtTime
-  boughtTime:{type:String, default:"", comment:"消费者ID"},
-  // f)金额:money
-  money:{type:{},comment:"金额"},
-
-
+var BrandSchema = new Schema({
+ 
+  brandname: { type: String, default: '' , comment:"品牌名称"},
+  website: { type: String, default: '', comment:"拥有网站" },
+  address:{type:String, default:'', comment:"总部地址"},
+  introduction: { type: String, default: '', comment:"品牌介绍" },
+  user: {type : Schema.ObjectId, ref : 'User', comment:"所有人"},
+  userName: {type : String, default: '', comment:"所有人名称"},
+  category:{
+      type:[{name:{type:String, default:''}}],
+      comment:"产品类别"
+  },
+  brandPhotoIds:{
+      type:[{type:String}],
+      comment:"品牌照片"
+  },
 });
 
-
-ConsumptionRecordSchema.statics = {
+BrandSchema.statics = {
   queryList: function (options, cb) {
     var criteria = options.criteria || {};
     this.find(criteria)
@@ -45,16 +35,15 @@ ConsumptionRecordSchema.statics = {
       }
 };
 
-mongoose.model('ConsumptionRecord', ConsumptionRecordSchema);
 
-
+mongoose.model("Brand", BrandSchema);
 
 /**--------------------------------------------------------------------------**/
 /********手动配置字段Start*******/
-var ObjectSchema = ConsumptionRecordSchema;//Schema upside
-var path = "consumer";//the path to of object
-var endName = "consumptionRecord";//the name of object
-var cnName = "消费记录管理";//the chinese name of object
+var ObjectSchema = BrandSchema;//Schema upside
+var path = "front";//the path to of object
+var endName = "brand";//the name of object
+var cnName = "个人品牌";//the chinese name of object
 /********手动配置字段End*******/
 
 var firstNameCapital = endName.charAt(0).toUpperCase()+endName.slice(1);

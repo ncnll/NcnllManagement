@@ -1,7 +1,8 @@
 var Mustache = require('mustache');
 var fs = require('fs');
+var mkdirp = require('mkdirp');
 //need to install mustache
-
+//need to install mkdirp
 
 //The following code is need append to all the model file.
 //And need to be modified.
@@ -37,9 +38,9 @@ exports.config = config;*/
 
 /************************CONFIG INFO END**********************/
 
-//console.log(ejsTemplate)
-var modelNames = ['product', 'project', 'camera', 'consumptionRecord', 'imageInfo', 'producePlace', 'productType'];
-var modelPath = "./app/models/";
+//Models' names are configed here!
+var modelNames = ['brand', 'category', 'productInfo', 'user'];
+var modelPath = "./app/models/front/";
 
 
 //Load templates
@@ -67,7 +68,7 @@ modelNames.forEach(function(modelName){
   //Generate controllerTmpelate
   var controllerTmpelateOutput = Mustache.render(controllerTmpelate, modelObj);
   if (!fs.existsSync("./autogenerate/generateddemo/controller/"+modelObj.config.path+"/")){
-      fs.mkdirSync("./autogenerate/generateddemo/controller/"+modelObj.config.path+"/");
+      mkdirp.sync("./autogenerate/generateddemo/controller/"+modelObj.config.path+"/");
   }
   var controllerPath = "./autogenerate/generateddemo/controller/"+modelObj.config.path+"/"+modelName+".js";
   fs.writeFile(controllerPath, controllerTmpelateOutput, function(err) {
@@ -80,7 +81,7 @@ modelNames.forEach(function(modelName){
   //Generate routeTemplate
   var routeTemplateOutput = Mustache.render(routeTemplate, modelObj);
   if (!fs.existsSync("./autogenerate/generateddemo/route/"+modelObj.config.path+"/")){
-          fs.mkdirSync("./autogenerate/generateddemo/route/"+modelObj.config.path+"/");
+        mkdirp.sync("./autogenerate/generateddemo/route/"+modelObj.config.path+"/");
       }
   var routePath = "./autogenerate/generateddemo/route/"+modelObj.config.path+"/"+modelName+".js";
   fs.writeFile(routePath, routeTemplateOutput, function(err) {
@@ -93,7 +94,7 @@ modelNames.forEach(function(modelName){
   //Generate ejsTemplate
   var ejsTemplateOutput = Mustache.render(ejsTemplate, modelObj);
   if (!fs.existsSync("./autogenerate/generateddemo/ejs/"+modelObj.config.path+"/")){
-    fs.mkdirSync("./autogenerate/generateddemo/ejs/"+modelObj.config.path+"/");
+    mkdirp.sync("./autogenerate/generateddemo/ejs/"+modelObj.config.path+"/");
   }
   var ejsPath = "./autogenerate/generateddemo/ejs/"+modelObj.config.path+"/"+modelName+".ejs";
   fs.writeFile(ejsPath, ejsTemplateOutput, function(err) {

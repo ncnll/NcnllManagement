@@ -98,14 +98,15 @@
             pageList:[10,20,30,40,50],
             columns:[[
                       //{field:'ck', checkbox:true},
+                        {field:'_id', title:'编号', width:220},
                         {field:'parentId', title:'父级ID', width:120},
                         {field:'nodeType', title:'节点类型', width:120},
                         {field:'description', title:'产品描述', width:120},
                         {field:'components', title:'组成成分', width:120},
                         {field:'expireTime', title:'保质期(天)', width:120},
                         {field:'images', title:'产品图片集合', width:120},
-                        {field:'standardId', title:'产品标准ID', width:120},
-                      {field:'_id', title:'编号', hidden:true}
+                        {field:'standardId', title:'产品标准ID', width:120}
+
             ]],
             onLoadError: function(msge){
                 $.messager.alert('错误信息','服务器连接已断开或服务器内部错误！','error');
