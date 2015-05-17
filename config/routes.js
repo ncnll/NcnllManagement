@@ -159,6 +159,7 @@ module.exports = function (app, passport) {
   app.get("/front/productInfo/toSearchList", productInfoCtrl.toSearchList);
   app.post("/front/productInfo/searchList", productInfoCtrl.searchList);
   app.post("/front/productInfo/save", productInfoCtrl.add);
+  app.post("/front/productInfo/updateScrollImage", productInfoCtrl.updateScrollImage);
   app.post("/front/productInfo/remove", productInfoCtrl.remove);
   app.post("/front/productInfo/update", productInfoCtrl.updateById);
    //产品分类管理

@@ -52,31 +52,7 @@
     <%- include ../common/jqueryEasyUI.js.ejs %>
 
     <script type="text/javascript">
-      var currentAppendRowValues;
-      function appendRowOfImageScroll(){
-        $('#appendRowOfImageScroll').window('open');
-
-        //Load grid
-        $("#dgCurrentAppendRowValues").datagrid({
-            
-            title:"产品信息列表",
-             
-            singleSelect:true,
-            pageSize:10,
-            pageList:[10,20,30,40,50],
-            columns:[[
-              //{field:'ck', checkbox:true},
-              {field:'title', title:'标题', width:120},
-              {field:'description', title:'描述', width:120},
-              {field:'orderIndex', title:'排序', width:120},
-              {field:'tabType', title:'tab类型', hidden:true}
-            ]]
-        });
-
-        for(var i=0; i<currentAppendRowValues.length; i++){
-          $('#dgCurrentAppendRowValues').datagrid('appendRow',currentAppendRowValues[i]);
-        }
-      }
+      
       /***
        * author: charmyin
        * datetime: 2015-5-1
@@ -134,8 +110,7 @@
               {field:'praisedUsers', title:'点赞次数', width:120},
               {field:'scrollPics', title:'图片轮播', width:120,
                 formatter: function(value,row,index){
-                  currentAppendRowValues = value;
-                  return "<a href='javascript:appendRowOfImageScroll()'>管理图片轮播</a>";  
+                  return "<a href='javascript:appendRowOfImageScroll("+index+")'>管理图片轮播</a>";  
                 }
               },
               {field:'timelapseVideos', title:'缩时摄像', width:120,
@@ -155,8 +130,78 @@
             }
         });
 
+        //图片轮播管理
+        $("#dgCurrentAppendRowValues").datagrid({
+            title:"轮播图片列表",
+            singleSelect:true,
+            toolbar:"#appendRowOfImageScrollToolbar",
+            columns:[[
+              //{field:'ck', checkbox:true},
+              {field:'title', title:'标题', width:120},
+              {field:'orderIndex', title:'Tab排序', width:120},
+              {field:'description', title:'描述', width:220},
+              {field:'operation', title:'操作', width:120, formatter: function(value,row,index){
+                  return "<a href='javascript:managePictureGroup("+index+")'>编辑</a>";  
+                }
+              },
+              {field:'tabType', title:'tab类型', hidden:true}
+            ]]
+        });
       });
+      //载入轮播图片grid中的数据
+      function appendRowOfImageScroll(gdIndex){
+        var rowDatas = $("#dataGrid").datagrid("getRows")[gdIndex].scrollPics;
+        $('#appendRowOfImageScroll').window('open');
+         //清除图片数据
+        $('#dgCurrentAppendRowValues').datagrid('loadData',[]);
+        //载入图片数据
+         //载入图片数据
+        for(var i=0; i<rowDatas.length; i++)
+          $('#dgCurrentAppendRowValues').datagrid('appendRow',rowDatas[i]);
+      }
+      //载入轮播图片Grid中，点击图片集合管理后展现的grid中的数据
+      var managePictureGroupGdIndex;
+      function managePictureGroup(gdIndex){
+        managePictureGroupGdIndex = gdIndex;
+        $("#imageScrollImageGroupForm").form("clear");
+        var rowDatas = $("#dgCurrentAppendRowValues").datagrid("getRows");
+        $('#imageScrollImageGroup').window('open');
+        if(rowDatas&&rowDatas.length>0)
+          $("#imageScrollImageGroupForm").form("load",rowDatas[gdIndex])
+      }
+      /********Add item to picScroll list*********/
+      function saveImageScrollImageInEditOrSave(){
+        
+        var result = { };
+        $.each($("#imageScrollImageGroupForm").serializeArray(), function() {
+            result[this.name] = this.value;
+        });
+        //If save
+        if(managePictureGroupGdIndex<0){
+          //Append data 
+          $('#dgCurrentAppendRowValues').datagrid('appendRow',result);
+        }else{
+          $('#dgCurrentAppendRowValues').datagrid('updateRow',{
+            index: managePictureGroupGdIndex,
+            row: result
+          });
+        }
 
+        //Close dialog
+        $('#imageScrollImageGroup').dialog('close');
+      }
+      /*******Post image scroll array to server********/
+      function saveImageScrollImageGroup(){
+        var postData = {};
+        postData.productInfoId = $("#dataGrid").datagrid("getSelected")._id;
+        postData.scrollImages = JSON.stringify($('#dgCurrentAppendRowValues').datagrid('getRows'));
+
+        $.post("/front/productInfo/updateScrollImage", postData, function(result){
+          console.log(result)
+        });
+        console.log($("#dataGrid").datagrid("getSelected"));
+        console.log($('#dgCurrentAppendRowValues').datagrid('getRows'));
+      }
       /**Do search submit**/
       function submitSearchForm(){
         $('#searchfm').form('submit',{
@@ -177,6 +222,7 @@
             }
         });
       }
+
 
       //Save or update url
       var url;
@@ -291,7 +337,7 @@
       <div id="toolbar">
         <form id="searchfm" method="post" style="display:inline;">
           设备CPU序列号
-          <input id="search_eq_code" name="search_eq_code" required="true" class="easyui-validatebox" />
+          <input id="search_eq_code" name="search_eq_code" class="easyui-validatebox" />
           状态:
           <input class="easyui-combobox" id="disbale"  data-options="
               panelHeight:'auto',
@@ -375,10 +421,55 @@
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveForm()">保存</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
       </div>
-
-      <div id="appendRowOfImageScroll" class="easyui-window" title="Modal Window" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:500px;height:200px;padding:10px;">
+     
+      <!--轮播图片Modal Begin-->
+      <div id="appendRowOfImageScroll" class="easyui-dialog" title="轮播图片管理" data-options="modal:true,closed:true,iconCls:'icon-save', buttons:'#imageGroupdlg-buttons'" style="width:650px;height:400px;padding:10px;">
         <table id="dgCurrentAppendRowValues">
         </table>
+        <div id="appendRowOfImageScrollToolbar" style="text-align:right;">
+          <span>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="managePictureGroup(-1)">新建</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editForm()">修改</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteSelectedItems()">删除</a>
+          </span>
+        </div>
       </div>
+      <div id="imageGroupdlg-buttons">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveImageScrollImageGroup()" style="width:90px">保存</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#appendRowOfImageScroll').dialog('close')" style="width:90px">关闭</a>
+      </div>
+
+      <!--轮播图片图片集合Grid Begin-->
+      <div id="imageScrollImageGroup" class="easyui-dialog" title="图片集合编辑" data-options="modal:true,closed:true,iconCls:'icon-save',buttons:'#imageGroupdEditlg-buttons'" style="width:600px;height:700px;padding:10px;" >
+          <form id="imageScrollImageGroupForm">
+            <table cellpadding="5" style="width:50%;margin:0 auto 0 auto;text-align:center;">
+              <tr>
+                  <td>排序:</td>
+                  <td><input class="easyui-textbox" name="orderIndex" data-options="required:true"></input></td>
+              </tr>
+              <tr>
+                  <td>标题名称:</td>
+                  <td><input class="easyui-textbox" name="title" data-options="required:true"></input></td>
+              </tr>
+              <tr>
+                  <td>描述:</td>
+                  <td><textarea class="easyui-textbox" name="description" data-options="multiline:true" style="height:80px"></textarea></td>
+              </tr>
+            </table>
+            <!-- <div> <input type="text" name=""/> </div>
+            <div> <input type="text" name=""/></div>
+            <div>类型 </div>
+            <div> <textarea type="text" name=""></textarea></div> -->
+            <div>图片集合<!--  <input type="text" name="picIds"/> --></div>  
+            <input type="hidden" name="tabIndex"/>
+          </form>
+      </div>
+      <div id="imageGroupdEditlg-buttons">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveImageScrollImageInEditOrSave()" style="width:90px">保存</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#imageScrollImageGroup').dialog('close')" style="width:90px">取消</a>
+      </div>      
+
+      
+     <!--轮播图片图片集合Grid End-->
   </body>
 </html>

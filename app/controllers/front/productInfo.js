@@ -3,6 +3,9 @@ var mongoose = require('mongoose')
   , utils = require('../../../lib/utils')
   , passport = require('passport');
 
+Promise.promisifyAll(CommonModel);
+Promise.promisifyAll(CommonModel.prototype);
+
 exports.toSearchList = function(req, res){
   res.render("front/productInfo",{object_name:"产品信息"});
 };
@@ -54,3 +57,16 @@ exports.updateById = function(req, res){
 
 };
 
+exports.updateScrollImage = function(req, res){
+  CommonModel.findOneAsync({ _id:req.body._id}).then(function(productInfo) {
+      if(productInfo){
+        utils.setSaveResponse(err, res, obj);
+      }else{
+        return Promise.reject(new Error());
+      }
+      
+  }).catch(function(e){
+    utils.setSaveResponse(e, res, obj);
+  });
+  
+}
