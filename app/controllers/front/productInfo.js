@@ -39,7 +39,7 @@ exports.add = function (req, res) {
 exports.remove = function(req, res){
   var id = req.param("_id");
   CommonModel.findOneAndRemove(id, function(err, doc){
-    utils.setSaveResponse(err, res, doc);
+    utils.setDeleteResponse(err, res, doc);
   });
 };
 
@@ -58,15 +58,23 @@ exports.updateById = function(req, res){
 };
 
 exports.updateScrollImage = function(req, res){
-  CommonModel.findOneAsync({ _id:req.body._id}).then(function(productInfo) {
-      if(productInfo){
-        utils.setSaveResponse(err, res, obj);
-      }else{
-        return Promise.reject(new Error());
-      }
-      
+  //var scrollImages = req
+  CommonModel.findOneAsync({ _id:req.body.productInfoId}).then(function(productInfo) {
+    if(productInfo){
+      return productInfo;
+    }else{
+      return Promise.reject(new Error());
+    }
+  }).then(function(productInfo){
+    var scrollPics = eval('('+req.body.scrollImages+')');
+    return CommonModel.updateAsync({_id:req.body.productInfoId}, {scrollPics:scrollPics}, {multi:true});
+  }).then(function(raw){
+    utils.setSaveResponse(undefined, res, raw);
   }).catch(function(e){
-    utils.setSaveResponse(e, res, obj);
+    //e?1:e=new Error("未知错误");
+    utils.setSaveResponse(e, res, undefined);
   });
   
 }
+
+

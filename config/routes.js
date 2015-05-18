@@ -63,11 +63,11 @@ module.exports = function (app, passport) {
   app.locals(systemSetting);
 
   //禁用同源策略
-  app.all('/*', function(req, res, next) {
+ /* app.all('/*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     next();
-  });
+  });*/
   //相机管理
   app.get("/device/camera/toSearchList", cameraCtrl.toSearchList);
   app.post("/device/camera/searchList", cameraCtrl.searchList);
@@ -75,6 +75,8 @@ module.exports = function (app, passport) {
   app.post("/device/camera/remove", cameraCtrl.remove);
   app.post("/device/camera/update", cameraCtrl.updateById);
 
+  /**上传文件**/
+  app.post("/index/uploadCommonFile", indexRoute.uploadCommonFile);
 
   //消费记录管理管理
   app.get("/consumer/consumptionRecord/toSearchList", consumptionRecordCtrl.toSearchList);

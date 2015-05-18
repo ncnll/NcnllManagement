@@ -48,7 +48,42 @@
         margin:5px 10px 5px 10px;
         padding:4px 0px 4px 14px;
        }
+
+       #imagesShowDiv{
+            overflow:auto;
+            height:100%;
+            background:#fafafa;
+        }
+        
+        #imagesShowDiv ul{
+            list-style:none;
+            margin:0 auto 0 25px;
+            padding:0px;
+            background: yellow;
+        }
+        #imagesShowDiv li{
+            display:inline;
+            float:left;
+            margin:10px;
+        }
+        #imagesShowDiv .item{
+            display:block;
+            text-decoration:none;
+        }
+        #imagesShowDiv .item img{
+            border:1px solid #333;
+            width:150px;
+            height:150px;
+        }
+        #imagesShowDiv .item p{
+            margin:0;
+            font-weight:bold;
+            text-align:center;
+            color:#c3c3c3;
+        }
+        
     </style>
+
     <%- include ../common/jqueryEasyUI.js.ejs %>
 
     <script type="text/javascript">
@@ -140,6 +175,8 @@
               {field:'title', title:'标题', width:120},
               {field:'orderIndex', title:'Tab排序', width:120},
               {field:'description', title:'描述', width:220},
+              {field:'picIds', title:'图片集合', hidden:true},
+              {field:'tabType', title:'tabType', hidden:true},
               {field:'operation', title:'操作', width:120, formatter: function(value,row,index){
                   return "<a href='javascript:managePictureGroup("+index+")'>编辑</a>";  
                 }
@@ -147,185 +184,270 @@
               {field:'tabType', title:'tab类型', hidden:true}
             ]]
         });
-      });
-      //载入轮播图片grid中的数据
-      function appendRowOfImageScroll(gdIndex){
-        var rowDatas = $("#dataGrid").datagrid("getRows")[gdIndex].scrollPics;
-        $('#appendRowOfImageScroll').window('open');
-         //清除图片数据
-        $('#dgCurrentAppendRowValues').datagrid('loadData',[]);
-        //载入图片数据
-         //载入图片数据
-        for(var i=0; i<rowDatas.length; i++)
-          $('#dgCurrentAppendRowValues').datagrid('appendRow',rowDatas[i]);
-      }
-      //载入轮播图片Grid中，点击图片集合管理后展现的grid中的数据
-      var managePictureGroupGdIndex;
-      function managePictureGroup(gdIndex){
-        managePictureGroupGdIndex = gdIndex;
-        $("#imageScrollImageGroupForm").form("clear");
-        var rowDatas = $("#dgCurrentAppendRowValues").datagrid("getRows");
-        $('#imageScrollImageGroup').window('open');
-        if(rowDatas&&rowDatas.length>0)
-          $("#imageScrollImageGroupForm").form("load",rowDatas[gdIndex])
-      }
-      /********Add item to picScroll list*********/
-      function saveImageScrollImageInEditOrSave(){
-        
-        var result = { };
-        $.each($("#imageScrollImageGroupForm").serializeArray(), function() {
-            result[this.name] = this.value;
-        });
-        //If save
-        if(managePictureGroupGdIndex<0){
-          //Append data 
-          $('#dgCurrentAppendRowValues').datagrid('appendRow',result);
-        }else{
-          $('#dgCurrentAppendRowValues').datagrid('updateRow',{
-            index: managePictureGroupGdIndex,
-            row: result
-          });
-        }
 
-        //Close dialog
-        $('#imageScrollImageGroup').dialog('close');
-      }
-      /*******Post image scroll array to server********/
-      function saveImageScrollImageGroup(){
-        var postData = {};
-        postData.productInfoId = $("#dataGrid").datagrid("getSelected")._id;
-        postData.scrollImages = JSON.stringify($('#dgCurrentAppendRowValues').datagrid('getRows'));
-
-        $.post("/front/productInfo/updateScrollImage", postData, function(result){
-          console.log(result)
-        });
-        console.log($("#dataGrid").datagrid("getSelected"));
-        console.log($('#dgCurrentAppendRowValues').datagrid('getRows'));
-      }
-      /**Do search submit**/
-      function submitSearchForm(){
-        $('#searchfm').form('submit',{
-            onSubmit: function(param){
-              if(!$(this).form('validate')){
-                return false;
-              }
-              //Validate the form
-              var arrayData = $('#searchfm').serializeArray();
-              var i = 0;
-              for(; i < arrayData.length; i++) {
-                  param[arrayData[i].name] = arrayData[i].value;
-              }
-              $('#dataGrid').datagrid('load', param);
-              return false;
+        //拖动，改变顺序
+        $('#imagesShowDiv .item').draggable({
+            revert:true,
+            proxy:'clone',
+            onStartDrag:function(){
+                $(this).draggable('options').cursor = 'not-allowed';
+                $(this).draggable('proxy').css('z-index',10);
             },
-            success: function(resultString){
+            onStopDrag:function(){
+                $(this).draggable('options').cursor='move';
             }
         });
-      }
+        $('#imagesShowDiv .item').droppable({
+            onDragEnter:function(e,source){
+                $(source).draggable('options').cursor='auto';
+               // $(this).css("background")
+            },
+            onDragLeave:function(e,source){
+                $(source).draggable('options').cursor='not-allowed';
+            },
+            onDrop:function(e,source){
+                console.log(e.target);
+                //var name = $(source).find('p:eq(0)').html();
+                //var price = $(source).find('p:eq(1)').html();
+                //addProduct(name, parseFloat(price.split('$')[1]));
+            }
+        });
 
+        //上传图片
+        $('#uploadPicForm').form({
+            success:function(data){
+              console.log(data)
+              var dataObj = eval("("+data+")");
+              appendScrollImagesToDiv(dataObj.file.name);
+              //$.messager.alert('Info', data, 'info');
+            }
+        });
+      });
+  /*********************初始化结束***************************/
 
-      //Save or update url
-      var url;
-      //Open new form
-      function newForm(){
-          $('#dlg').dialog('open').dialog('setTitle','<%= object_name %>新增');
-          $('#fm').form('clear');
-          $('#usernameId').removeAttr('disabled');
-          url = '/front/productInfo/save';
+    //载入轮播图片
+    function appendScrollImagesToDiv(imageName){
+      var srcPath = '<li><a href="#" class="item"><img src="/images/'+imageName+'"/><div><p><a href="javascript:deleteScrollImage(this);" class="easyui-linkbutton">删除</a></p></div></a><input type="hidden" name="picIds" value="'+imageName+'"/></li>';
+      var srcPathObj=$(srcPath);
+      srcPathObj.find(".easyui-linkbutton").linkbutton({
+          iconCls: 'icon-remove'
+      });
+      $("#imagesShowDiv ul").append(srcPathObj);
+    }
+    //删除当前的滚动图片
+    function deleteScrollImage(target){
+      $(target).parent().parent().remove();
+    }
+
+    //载入轮播图片grid中的数据
+    function appendRowOfImageScroll(gdIndex){
+      var rowDatas = $("#dataGrid").datagrid("getRows")[gdIndex].scrollPics;
+      $('#appendRowOfImageScroll').window('open');
+       //清除图片数据
+      $('#dgCurrentAppendRowValues').datagrid('loadData',[]);
+      //载入图片数据
+      for(var i=0; i<rowDatas.length; i++)
+        $('#dgCurrentAppendRowValues').datagrid('appendRow',rowDatas[i]);
+    }
+    //载入轮播图片Grid中，点击图片集合管理后展现的grid中的数据
+    var managePictureGroupGdIndex;
+    function managePictureGroup(gdIndex){
+      managePictureGroupGdIndex = gdIndex;
+      $("#imageScrollImageGroupForm").form("clear");
+      var rowDatas = $("#dgCurrentAppendRowValues").datagrid("getRows");
+      $('#imageScrollImageGroup').window('open');
+      if(rowDatas&&rowDatas.length>0){
+        var rowDataTmp = rowDatas[gdIndex];
+        $("#imageScrollImageGroupForm").form("load",rowDataTmp);
+        //载入图片， load images
+        $.each(rowDataTmp.picIds, function(){
+          console.log(this);
+          appendScrollImagesToDiv(this);
+        });
       }
-      /**Open edit form **/
-      function editForm(){
-          var selectedRow = $('#dataGrid').datagrid('getSelections');
-          var rowsLength = selectedRow.length;
-          if (rowsLength>0){
-              $('#dlg').dialog('open').dialog('setTitle','<%= object_name %>修改');
-              $('#fm').form('load',selectedRow[0]);
-              url = '/front/productInfo/update';
-          }else{
-            $.messager.show({    // show error message
+      
+
+    }
+    /********Add item to picScroll list*********/
+    function saveImageScrollImageInEditOrSave(){
+      var result = { };
+      $.each($("#imageScrollImageGroupForm").serializeArray(), function() {
+          result[this.name] = this.value;
+      });
+      result['picIds'] = [];
+      $.each($("input[name='picIds']"), function(){
+        result['picIds'].push(this.value);
+      });
+      //If save
+      if(managePictureGroupGdIndex<0){
+        //Append data 
+        $('#dgCurrentAppendRowValues').datagrid('appendRow',result);
+      }else{
+        $('#dgCurrentAppendRowValues').datagrid('updateRow',{
+          index: managePictureGroupGdIndex,
+          row: result
+        });
+      }
+      //Close dialog
+      $('#imageScrollImageGroup').dialog('close');
+    }
+    /*******Post image scroll array to server********/
+    function saveImageScrollImageGroup(){
+      var postData = {};
+      postData.productInfoId = $("#dataGrid").datagrid("getSelected")._id;
+      postData.scrollImages = JSON.stringify($('#dgCurrentAppendRowValues').datagrid('getRows'));
+
+      $.post("/front/productInfo/updateScrollImage", postData, function(result){
+        if(result.success){
+              $.messager.show({    // show error message
                   title: '提示<span style="color:red;">!</span>',
-                  msg: "<div style='text-align:center;margin-top:10px;'>请选择要修改的行！</div>",
+                  msg: "<div style='text-align:center;margin-top:10px;'>修改成功！</div>",
                   style:{
                   right:'',
                   top:document.body.scrollTop+document.documentElement.scrollTop,
                   bottom:''
                 }
               });
+            }else{
+              $.messager.show({    // show error message
+                  title: '提示<span style="color:red;">!</span>',
+                  msg: "<div style='text-align:center;margin-top:10px;'>修改失败！</div>",
+                  style:{
+                  right:'',
+                  top:document.body.scrollTop+document.documentElement.scrollTop,
+                  bottom:''
+                }
+              });
+            }
+      });
+    //  console.log($("#dataGrid").datagrid("getSelected"));
+    //  console.log($('#dgCurrentAppendRowValues').datagrid('getRows'));
+    }
+    /**Do search submit**/
+    function submitSearchForm(){
+      $('#searchfm').form('submit',{
+          onSubmit: function(param){
+            if(!$(this).form('validate')){
+              return false;
+            }
+            //Validate the form
+            var arrayData = $('#searchfm').serializeArray();
+            var i = 0;
+            for(; i < arrayData.length; i++) {
+                param[arrayData[i].name] = arrayData[i].value;
+            }
+            $('#dataGrid').datagrid('load', param);
+            return false;
+          },
+          success: function(result){
+            
           }
-      }
-      /**Save edit form**/
-      function saveForm(){
-          $('#fm').form('submit',{
-              url: url,
-              onSubmit: function(param){
-                //Validate the form
-                return $(this).form('validate');
-              },
-              success: function(resultString){
-                var result = eval("("+resultString+")");
-                  if (!result.success){
-                      $.messager.show({
-                        title: '提示<span style="color:red;">!</span>',
-                          msg: "<div style='text-align:center;margin-top:10px;'>"+result.msg+"</div>",
-                          style:{
-                          right:'',
-                          top:document.body.scrollTop+document.documentElement.scrollTop,
-                          bottom:''
-                        }
-                      });
-                  } else {
-                      $('#dlg').dialog('close');        // close the dialog
-                      $.messager.show({
-                        title: '提示',
-                          msg: "<div style='text-align:center;margin-top:10px;'>保存成功!</div>",
-                          style:{
-                          right:'',
-                          top:document.body.scrollTop+document.documentElement.scrollTop,
-                          bottom:''
-                        }
-                      });
-                    $('#dataGrid').datagrid('reload');
-                  }
-              }
+      });
+    }
+
+
+    //Save or update url
+    var url;
+    //Open new form
+    function newForm(){
+        $('#dlg').dialog('open').dialog('setTitle','<%= object_name %>新增');
+        $('#fm').form('clear');
+        $('#usernameId').removeAttr('disabled');
+        url = '/front/productInfo/save';
+    }
+    /**Open edit form **/
+    function editForm(){
+        var selectedRow = $('#dataGrid').datagrid('getSelections');
+        var rowsLength = selectedRow.length;
+        if (rowsLength>0){
+            $('#dlg').dialog('open').dialog('setTitle','<%= object_name %>修改');
+            $('#fm').form('load',selectedRow[0]);
+            url = '/front/productInfo/update';
+        }else{
+          $.messager.show({    // show error message
+              title: '提示<span style="color:red;">!</span>',
+              msg: "<div style='text-align:center;margin-top:10px;'>请选择要修改的行！</div>",
+              style:{
+              right:'',
+              top:document.body.scrollTop+document.documentElement.scrollTop,
+              bottom:''
+            }
           });
-      }
-
-      /**Delete item**/
-      function deleteSelectedItems(){
-          var rows = $('#dataGrid').datagrid('getSelections');
-          var rowsLength = rows.length;
-          if (rowsLength>0){
-              $.messager.confirm('提示信息','确定删除该行？',function(r){
-                  if (r){
-                    $.post('/front/productInfo/remove', {_id:rows[0]._id}, function(result){
-                          if(result.success){
-                              $.messager.show({
-                                  title: '提示<span style="color:red;">!</span>',
-                                  msg: "<div style='text-align:center;margin-top:10px;'>成功！</div>",
-                                  style:{
-                                      right:'',
-                                      top:document.body.scrollTop+document.documentElement.scrollTop,
-                                      bottom:''
-                                  }
-                              });
-                          }else{
-                              $.messager.alert('错误信息','服务器连接已断开或服务器内部错误！','error');
-                          }
-                          $("#dataGrid").datagrid("reload");
-                      });
-                  }
-              });
-          }else{
-            $.messager.show({    // show error message
-                  title: '提示<span style="color:red;">!</span>',
-                  msg: "<div style='text-align:center;margin-top:10px;'>请选择要删除的行！</div>",
-                  style:{
-                  right:'',
-                  top:document.body.scrollTop+document.documentElement.scrollTop,
-                  bottom:''
+        }
+    }
+    /**Save edit form**/
+    function saveForm(){
+        $('#fm').form('submit',{
+            url: url,
+            onSubmit: function(param){
+              //Validate the form
+              return $(this).form('validate');
+            },
+            success: function(resultString){
+              var result = eval("("+resultString+")");
+                if (!result.success){
+                    $.messager.show({
+                      title: '提示<span style="color:red;">!</span>',
+                        msg: "<div style='text-align:center;margin-top:10px;'>"+result.msg+"</div>",
+                        style:{
+                        right:'',
+                        top:document.body.scrollTop+document.documentElement.scrollTop,
+                        bottom:''
+                      }
+                    });
+                } else {
+                    $('#dlg').dialog('close');        // close the dialog
+                    $.messager.show({
+                      title: '提示',
+                        msg: "<div style='text-align:center;margin-top:10px;'>保存成功!</div>",
+                        style:{
+                        right:'',
+                        top:document.body.scrollTop+document.documentElement.scrollTop,
+                        bottom:''
+                      }
+                    });
+                  $('#dataGrid').datagrid('reload');
                 }
-              });
-          }
+            }
+        });
+    }
+
+    /**Delete item**/
+    function deleteSelectedItems(){
+        var rows = $('#dataGrid').datagrid('getSelections');
+        var rowsLength = rows.length;
+        if (rowsLength>0){
+            $.messager.confirm('提示信息','确定删除该行？',function(r){
+                if (r){
+                  $.post('/front/productInfo/remove', {_id:rows[0]._id}, function(result){
+                        if(result.success){
+                            $.messager.show({
+                                title: '提示<span style="color:red;">!</span>',
+                                msg: "<div style='text-align:center;margin-top:10px;'>成功！</div>",
+                                style:{
+                                    right:'',
+                                    top:document.body.scrollTop+document.documentElement.scrollTop,
+                                    bottom:''
+                                }
+                            });
+                        }else{
+                            $.messager.alert('错误信息','服务器连接已断开或服务器内部错误！','error');
+                        }
+                        $("#dataGrid").datagrid("reload");
+                    });
+                }
+            });
+        }else{
+          $.messager.show({    // show error message
+                title: '提示<span style="color:red;">!</span>',
+                msg: "<div style='text-align:center;margin-top:10px;'>请选择要删除的行！</div>",
+                style:{
+                right:'',
+                top:document.body.scrollTop+document.documentElement.scrollTop,
+                bottom:''
+              }
+            });
+        }
       }
     </script>
   </head>
@@ -440,7 +562,13 @@
       </div>
 
       <!--轮播图片图片集合Grid Begin-->
-      <div id="imageScrollImageGroup" class="easyui-dialog" title="图片集合编辑" data-options="modal:true,closed:true,iconCls:'icon-save',buttons:'#imageGroupdEditlg-buttons'" style="width:600px;height:700px;padding:10px;" >
+      <div id="imageScrollImageGroup" class="easyui-dialog" title="图片集合编辑" data-options="modal:true,closed:true,iconCls:'icon-save',toolbar: [{
+                    text:'添加图片',
+                    iconCls:'icon-add',
+                    handler:function(){
+                        alert('add')
+                    }
+                }],buttons:'#imageGroupdEditlg-buttons'" style="width:600px;height:700px;padding:10px;" >
           <form id="imageScrollImageGroupForm">
             <table cellpadding="5" style="width:50%;margin:0 auto 0 auto;text-align:center;">
               <tr>
@@ -460,16 +588,33 @@
             <div> <input type="text" name=""/></div>
             <div>类型 </div>
             <div> <textarea type="text" name=""></textarea></div> -->
-            <div>图片集合<!--  <input type="text" name="picIds"/> --></div>  
+            <div id="imagesShowDiv">
+                <ul>
+                    
+                </ul>
+            </div>  
             <input type="hidden" name="tabIndex"/>
           </form>
-      </div>
+          <!--上传图片 Start-->
+          <form id="uploadPicForm" action="/index/uploadCommonFile" method="post" enctype="multipart/form-data">
+              <table>
+                  <tr>
+                      <td>选择图片</td>
+                      <td><input name="file" class="f1 easyui-filebox"></input></td>
+                  </tr>
+                  <tr>
+                      <td></td>
+                      <td><input type="submit" value="Submit"></input></td>
+                  </tr>
+              </table>
+          </form>
+          <!--上传图片 End-->
+      </div> 
       <div id="imageGroupdEditlg-buttons">
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveImageScrollImageInEditOrSave()" style="width:90px">保存</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#imageScrollImageGroup').dialog('close')" style="width:90px">取消</a>
       </div>      
-
-      
      <!--轮播图片图片集合Grid End-->
+    
   </body>
 </html>
