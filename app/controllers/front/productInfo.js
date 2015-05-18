@@ -2,7 +2,7 @@ var mongoose = require('mongoose')
   , CommonModel = mongoose.model('ProductInfo')
   , utils = require('../../../lib/utils')
   , passport = require('passport');
-
+var Promise = require('bluebird');
 Promise.promisifyAll(CommonModel);
 Promise.promisifyAll(CommonModel.prototype);
 

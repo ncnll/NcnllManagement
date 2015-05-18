@@ -138,16 +138,8 @@ module.exports = function (app, config, passport) {
     // cookieParser should be above session
     app.use(express.cookieParser())
 
-    /*app.use(express.urlencoded());
-    app.use(express.json());*/
-    // bodyParser should be above methodOverride
-    //app.use(express.bodyParser())
-
-
-
     app.use(express.methodOverride())
-
-
+    
     // express/mongo session storage
     app.use(express.session({
       secret: pkg.name,
