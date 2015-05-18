@@ -23,9 +23,6 @@ exports.userProducts = function(req, res) {
 
 /**File upload**/
 exports.uploadCommonFile = function(req, res){
-    console.log(req.body) // form fields
-    console.log(req.files) // form files
-    console.log(req.files.length)
     if(req.files && req.files.file){
     	res.json(req.files);
     	/*fs.rename(req.files.file.path, "./public/uploadimages/"+req.files.file.name, function(err){
@@ -36,7 +33,10 @@ exports.uploadCommonFile = function(req, res){
     		}
     	});*/
     }else{
-    	res.json({msg:"没有文件"});
+    	res.json({
+            success:false,
+            msg:"没有文件"
+        });
     }
     	
 };
