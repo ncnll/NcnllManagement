@@ -40,8 +40,8 @@
        }
 
        #dlg{
-        width:350px;
-        height:280px;
+        width:500px;
+        height:518px;
        }
 
        #dlg .ftitle{
@@ -106,14 +106,25 @@
                         {field:'userName', title:'所有人名称', width:120},
                         {field:'category', title:'产品类别', width:120},
                         {field:'brandPhotoIds', title:'品牌照片', width:120},
-                      {field:'_id', title:'编号', hidden:true}
+                        {field:'_id', title:'编号', hidden:true}
             ]],
             onLoadError: function(msge){
                 $.messager.alert('错误信息','服务器连接已断开或服务器内部错误！','error');
             }
         });
 
+        //上传图片
+        $('#uploadPicForm').form({
+            success:function(data){
+              var dataObj = eval("("+data+")");
+              $("#brandPhotoIds_input").val(dataObj.file.name);
+              $("#brandImageImg").attr("src", "/images/"+dataObj.file.name);
+            }
+        });
+
       });
+      /*******************************************Initial end********************************************************/
+
 
       /**Do search submit**/
       function submitSearchForm(){
@@ -142,7 +153,7 @@
       function newForm(){
           $('#dlg').dialog('open').dialog('setTitle','<%= object_name %>新增');
           $('#fm').form('clear');
-          $('#usernameId').removeAttr('disabled');
+          $("#brandImageImg").attr("src","");
           url = '/front/brand/save';
       }
       /**Open edit form **/
@@ -152,6 +163,7 @@
           if (rowsLength>0){
               $('#dlg').dialog('open').dialog('setTitle','<%= object_name %>修改');
               $('#fm').form('load',selectedRow[0]);
+              $("#brandImageImg").attr("src", "/images/"+selectedRow[0].brandPhotoIds[0]);//载入图片
               url = '/front/brand/update';
           }else{
             $.messager.show({    // show error message
@@ -308,10 +320,22 @@
                 </div>
                 <div class="fitem">
                     <label>品牌照片</label>
-                    <input name="brandPhotoIds" id="brandPhotoIds_input" class="easyui-validatebox" required="true">
+                    <img id="brandImageImg" style="height:200px;width:200px;" />
+                    <input name="brandPhotoIds" id="brandPhotoIds_input" type="hidden"/>
                 </div>
               <input type="hidden" name="_id" id="_id">
           </form>
+          <!--上传图片 Start-->
+          <form id="uploadPicForm" action="/index/uploadCommonFile" method="post" enctype="multipart/form-data" style="width:70%; margin-left:auto; margin-right:auto;">
+              <table style="width:100%; text-align:center;">
+                  <tr>
+                      <td>选择图片</td>
+                      <td><input name="file" class="easyui-filebox" style="width:200px;"></input></td>
+                      <td><input type="submit" value="提交"></input></td>
+                  </tr>
+              </table>
+          </form>
+          <!--上传图片 End-->
       </div>
       <div id="dlg-buttons">
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveForm()">保存</a>

@@ -40,8 +40,8 @@
        }
 
        #dlg{
-        width:350px;
-        height:280px;
+        width:450px;
+        height:680px;
        }
 
        #dlg .ftitle{
@@ -121,6 +121,14 @@
             }
         });
 
+        //上传图片
+        $('#uploadPicForm').form({
+            success:function(data){
+              var dataObj = eval("("+data+")");
+              $("#userPhotoID_input").val(dataObj.file.name);
+              $("#userPhotoIDImg").attr("src", "/images/"+dataObj.file.name);
+            }
+        });
       });
 
       /**Do search submit**/
@@ -150,7 +158,7 @@
       function newForm(){
           $('#dlg').dialog('open').dialog('setTitle','<%= object_name %>新增');
           $('#fm').form('clear');
-          $('#usernameId').removeAttr('disabled');
+          $("#userPhotoIDImg").attr("src","");
           url = '/front/user/save';
       }
       /**Open edit form **/
@@ -160,6 +168,7 @@
           if (rowsLength>0){
               $('#dlg').dialog('open').dialog('setTitle','<%= object_name %>修改');
               $('#fm').form('load',selectedRow[0]);
+              $("#userPhotoIDImg").attr("src", "/images/"+selectedRow[0].userPhotoID);//载入图片
               url = '/front/user/update';
           }else{
             $.messager.show({    // show error message
@@ -316,7 +325,7 @@
                 </div>
                 <div class="fitem">
                     <label>网站地址</label>
-                    <input name="website" id="website_input" class="easyui-validatebox" required="true">
+                    <input name="website" id="website_input" class="easyui-validatebox">
                 </div>
                 <div class="fitem">
                     <label>住址</label>
@@ -324,9 +333,9 @@
                 </div>
                 <div class="fitem">
                     <label>XXX</label>
-                    <input name="provider" id="provider_input" class="easyui-validatebox" required="true">
+                    <input name="provider" id="provider_input" class="easyui-validatebox" >
                 </div>
-                <div class="fitem">
+                <!-- <div class="fitem">
                     <label>密码</label>
                     <input name="hashed_password" id="hashed_password_input" class="easyui-validatebox" required="true">
                 </div>
@@ -337,21 +346,33 @@
                 <div class="fitem">
                     <label>口令</label>
                     <input name="authToken" id="authToken_input" class="easyui-validatebox" required="true">
-                </div>
-                <div class="fitem">
-                    <label>用户头像地址</label>
-                    <input name="userPhotoID" id="userPhotoID_input" class="easyui-validatebox" required="true">
-                </div>
-                <div class="fitem">
+                </div> -->
+                <!-- <div class="fitem">
                     <label>收藏</label>
                     <input name="storedProducts" id="storedProducts_input" class="easyui-validatebox" required="true">
-                </div>
-                <div class="fitem">
-                    <label></label>
+                </div> -->
+               <!--  <div class="fitem">
+                    <label>密码</label>
                     <input name="password" id="password_input" class="easyui-validatebox" required="true">
+                </div> -->
+                <div class="fitem">
+                    <label>用户头像地址</label>
+                    <img id="userPhotoIDImg" style="height:200px;width:200px;" />
+                    <input name="userPhotoID" id="userPhotoID_input" type="hidden"/>
                 </div>
               <input type="hidden" name="_id" id="_id">
           </form>
+           <!--上传图片 Start-->
+          <form id="uploadPicForm" action="/index/uploadCommonFile" method="post" enctype="multipart/form-data" style="width:70%; margin-left:auto; margin-right:auto;">
+              <table style="width:100%; text-align:center;">
+                  <tr>
+                      <td>选择图片</td>
+                      <td><input name="file" class="easyui-filebox" style="width:200px;"></input></td>
+                      <td><input type="submit" value="提交"></input></td>
+                  </tr>
+              </table>
+          </form>
+          <!--上传图片 End-->
       </div>
       <div id="dlg-buttons">
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveForm()">保存</a>

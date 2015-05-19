@@ -27,6 +27,7 @@ exports.searchList = function(req, res) {
 
 exports.add = function (req, res) {
     delete req.body._id;
+    req.body.password="111111";
     var commonModel = new CommonModel(req.body);
     commonModel.save(function(err) {
         utils.setSaveResponse(err, res, commonModel);
