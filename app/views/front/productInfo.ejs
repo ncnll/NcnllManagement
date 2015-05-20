@@ -21,9 +21,9 @@
            text-align:center;
        }
        .fitem label{
-            text-align:right;
+            text-align:center;
            display:inline-block;
-           width:100px;
+           width:120px;
            font-weight:bold;
        }
 
@@ -41,7 +41,7 @@
 
        #dlg{
         width:450px;
-        height:300px;
+        height:500px;
        }
 
        #dlg .ftitle{
@@ -208,8 +208,17 @@
             ]]
         });
 
+        //上传产品首页图片
+        $('#uploadProductShowForm').form({
+            success:function(data){
+              var dataObj = eval("("+data+")");
+              $("#indexImgIds_input").val(dataObj.file.name);
+              $("#indexImgIdsImg").attr("src", "/images/"+dataObj.file.name);
+            }
+        });
 
-        //上传图片
+
+        //上传imageScroll图片
         $('#uploadPicForm').form({
             success:function(data){
               var dataObj = eval("("+data+")");
@@ -259,13 +268,13 @@
         
 
     //删除轮播图片
-    function deleteScrollImageItem(){
-      var rows = $('#dgCurrentAppendRowValues').datagrid('getSelections');
+    function deleteDataGridItem(dataGridId){
+      var rows = $('#'+dataGridId).datagrid('getSelections');
       var rowsLength = rows.length;
       if (rowsLength>0){
         $.messager.confirm('提示信息','确定删除该行？',function(r){
-          var indexOfRow =  $('#dgCurrentAppendRowValues').datagrid('getRowIndex', rows[0]);
-          $('#dgCurrentAppendRowValues').datagrid('deleteRow', indexOfRow);
+          var indexOfRow =  $('#'+dataGridId).datagrid('getRowIndex', rows[0]);
+          $('#'+dataGridId).datagrid('deleteRow', indexOfRow);
           if (r){
              $.messager.show({
                 title: '提示<span style="color:red;">!</span>',
@@ -386,6 +395,7 @@
                 }
               });
               $("#appendRowOfImageScroll").dialog("close");
+              $("#dataGrid").datagrid("reload");
             }else{
               $.messager.show({    // show error message
                   title: '提示<span style="color:red;">!</span>',
@@ -470,6 +480,7 @@
             }
           });
           $("#videoTabManageDialog").dialog("close");
+          $("#dataGrid").datagrid("reload");
         }else{
           $.messager.show({    // show error message
               title: '提示<span style="color:red;">!</span>',
@@ -524,6 +535,7 @@
         if (rowsLength>0){
             $('#dlg').dialog('open').dialog('setTitle','<%= object_name %>修改');
             $('#fm').form('load',selectedRow[0]);
+            $("#indexImgIdsImg").attr("src", "/images/"+selectedRow[0].indexImgIds);//载入图片
             url = '/front/productInfo/update';
         }else{
           $.messager.show({    // show error message
@@ -674,18 +686,15 @@
                     <label>所属用户</label>
                     <input name="user" id="user_input" class="easyui-validatebox" required="true">
                 </div>
-                <div class="fitem">
-                    <label>展示图片集合</label>
-                    <input name="indexImgIds" id="indexImgIds_input" class="easyui-validatebox" required="true">
-                </div>
+                
                 <div class="fitem">
                     <label>浏览次数</label>
                     <input name="browseCount" id="browseCount_input" class="easyui-validatebox" required="true">
                 </div>
-                <div class="fitem">
+                <!-- <div class="fitem">
                     <label>点赞次数</label>
                     <input name="praisedUsers" id="praisedUsers_input" class="easyui-validatebox" required="true">
-                </div>
+                </div> -->
                 <!-- <div class="fitem">
                     <label>图片轮播</label>
                     <input name="scrollPics" id="scrollPics_input" class="easyui-validatebox" required="true">
@@ -698,8 +707,24 @@
                     <label>实时图片</label>
                     <input name="realtimePics" id="realtimePics_input" class="easyui-validatebox" required="true">
                 </div> -->
+                <div class="fitem">
+                    <label>展示图片</label>
+                    <img id="indexImgIdsImg" style="height:200px;width:200px;" />
+                    <input name="indexImgIds" id="indexImgIds_input" type="hidden"/>
+                </div>
               <input type="hidden" name="_id" id="_id">
           </form>
+           <!--上传图片 Start-->
+          <form id="uploadProductShowForm" action="/index/uploadCommonFile" method="post" enctype="multipart/form-data" style="margin-left:65px;">
+              <table>
+                  <tr>
+                      <td>选择图片</td>
+                      <td><input name="file" class="easyui-filebox" style="width:200px"></input></td>
+                      <td><input type="submit" value="提交"></input></td>
+                  </tr>
+              </table>
+          </form>
+          <!--上传图片 End-->
       </div>
       <div id="dlg-buttons">
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveForm()">保存</a>
@@ -714,7 +739,7 @@
           <span>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="managePictureGroup(-1)">新建</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editForm()">修改</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteScrollImageItem()">删除</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteDataGridItem('dgCurrentAppendRowValues')">删除</a>
           </span>
         </div>
       </div>
@@ -775,7 +800,7 @@
           <span>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="manageVideoTab(-1)">新建</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editForm()">修改</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteSelectedItems()">删除</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteDataGridItem('dgVideoTabManage')">删除</a>
           </span>
         </div>
       </div>
