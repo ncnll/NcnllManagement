@@ -15,7 +15,7 @@ var BrandSchema = new Schema({
   user: {type : Schema.ObjectId, ref : 'User', comment:"所有人"},
   userName: {type : String, default: '', comment:"所有人名称"},
   category:{
-      type:[{name:{type:String, default:''}}],
+      type:[{type:String, default:''}],
       comment:"产品类别"
   },
   brandPhotoIds:{

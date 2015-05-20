@@ -109,6 +109,7 @@
         });
 
       });
+/********************************************************Initial the page end*****************************************************/
 
       /**Do search submit**/
       function submitSearchForm(){
@@ -137,7 +138,6 @@
       function newForm(){
           $('#dlg').dialog('open').dialog('setTitle','<%= object_name %>新增');
           $('#fm').form('clear');
-          $('#usernameId').removeAttr('disabled');
           url = '/{{ config.path }}/{{ config.name }}/save';
       }
       /**Open edit form **/
