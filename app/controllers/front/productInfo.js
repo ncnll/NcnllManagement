@@ -57,6 +57,7 @@ exports.updateById = function(req, res){
 
 };
 
+//更新轮播图片
 exports.updateScrollImage = function(req, res){
   //var scrollImages = req
   CommonModel.findOneAsync({ _id:req.body.productInfoId}).then(function(productInfo) {
@@ -77,4 +78,23 @@ exports.updateScrollImage = function(req, res){
   
 }
 
-
+//更新视频tab
+exports.updateVideoShow = function(req, res){
+  //var scrollImages = req
+  CommonModel.findOneAsync({ _id:req.body.productInfoId}).then(function(productInfo) {
+    if(productInfo){
+      return productInfo;
+    }else{
+      return Promise.reject(new Error());
+    }
+  }).then(function(productInfo){
+    var timelapseVideos = eval('('+req.body.timelapseVideos+')');
+    return CommonModel.updateAsync({_id:req.body.productInfoId}, {timelapseVideos:timelapseVideos}, {multi:true});
+  }).then(function(raw){
+    utils.setSaveResponse(undefined, res, raw);
+  }).catch(function(e){
+    //e?1:e=new Error("未知错误");
+    utils.setSaveResponse(e, res, undefined);
+  });
+  
+}

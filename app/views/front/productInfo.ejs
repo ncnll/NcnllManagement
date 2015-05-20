@@ -40,8 +40,8 @@
        }
 
        #dlg{
-        width:350px;
-        height:280px;
+        width:450px;
+        height:300px;
        }
 
        #dlg .ftitle{
@@ -190,25 +190,23 @@
 
         //视频管理
         $("#dgVideoTabManage").datagrid({
-            title:"轮播图片列表",
+            title:"视频列表",
             singleSelect:true,
-            toolbar:"#appendRowOfImageScrollToolbar",
+            toolbar:"#videoTabToolbar",
             columns:[[
               //{field:'ck', checkbox:true},
               {field:'title', title:'标题', width:120},
               {field:'orderIndex', title:'Tab排序', width:120},
               {field:'description', title:'描述', width:220},
-              {field:'picIds', title:'图片集合', hidden:true},
+              {field:'videoLink', title:'视频连接', hidden:true},
               {field:'tabType', title:'tabType', hidden:true},
               {field:'operation', title:'操作', width:120, formatter: function(value,row,index){
-                  return "<a href='javascript:managePictureGroup("+index+")'>编辑</a>";  
+                  return "<a href='javascript:manageVideoTab("+index+")'>编辑</a>";  
                 }
               },
               {field:'tabType', title:'tab类型', hidden:true}
             ]]
         });
-        
-
 
 
         //上传图片
@@ -222,19 +220,24 @@
       });
   /*********************初始化结束***************************/
     //应用拖动拽入变换位置功能
-    
+    //和删除会冲突，所以加一个标记位
+    var isDrag=false;
     function applyDragToChangePosition(target){
       $(target).draggable({
             revert:true,
             proxy:'clone',
             onStartDrag:function(){
+                console.log("onStartDrag")
+                isDrag=true;
                 $(this).hide(500);
                 $(this).draggable('options').cursor = 'not-allowed';
                 $(this).draggable('proxy').css('z-index',10);
+                
             },
             onStopDrag:function(){
                 $(this).show(500);
                 $(this).draggable('options').cursor='move';
+                isDrag=false;
             }
         });
 
@@ -247,18 +250,49 @@
                 $(source).draggable('options').cursor='not-allowed';
             },
             onDrop:function(e,source){
-                $(source).insertBefore(e.target);
-                //var name = $(source).find('p:eq(0)').html();
-                //var price = $(source).find('p:eq(1)').html();
-                //addProduct(name, parseFloat(price.split('$')[1]));
+                if(isDrag){
+                  $(source).insertBefore(e.target);
+                }
             }
         });
     }
         
 
+    //删除轮播图片
+    function deleteScrollImageItem(){
+      var rows = $('#dgCurrentAppendRowValues').datagrid('getSelections');
+      var rowsLength = rows.length;
+      if (rowsLength>0){
+        $.messager.confirm('提示信息','确定删除该行？',function(r){
+          var indexOfRow =  $('#dgCurrentAppendRowValues').datagrid('getRowIndex', rows[0]);
+          $('#dgCurrentAppendRowValues').datagrid('deleteRow', indexOfRow);
+          if (r){
+             $.messager.show({
+                title: '提示<span style="color:red;">!</span>',
+                msg: "<div style='text-align:center;margin-top:10px;'>删除成功！</div>",
+                style:{
+                    right:'',
+                    top:document.body.scrollTop+document.documentElement.scrollTop,
+                    bottom:''
+                }
+            });
+          }
+        });
+      }else{
+        $.messager.show({// show error message
+            title: '提示<span style="color:red;">!</span>',
+            msg: "<div style='text-align:center;margin-top:10px;'>请选择要删除的行！</div>",
+            style:{
+            right:'',
+            top:document.body.scrollTop+document.documentElement.scrollTop,
+            bottom:''
+          }
+        });
+      }
+    }
+
     //载入轮播图片
     function appendScrollImagesToDiv(imageName){
-
       var srcPath = '<li><div class="item"><img src="/images/'+imageName+'"/><div><p class="removeScrollImageP"><a href="javascript:void(0)" class="easyui-linkbutton">删除</a></p></div></div><input type="hidden" name="picIds" value="'+imageName+'"/></li>';
       var srcPathObj=$(srcPath);
       srcPathObj.find(".easyui-linkbutton").linkbutton({
@@ -270,10 +304,11 @@
       $("#imagesShowDiv ul").append(srcPathObj);
 
       //应用拖动变换位置效果
-      applyDragToChangePosition(srcPathObj);
+      applyDragToChangePosition($(srcPathObj).find("img"));
     }
     //删除当前的滚动图片
     function deleteScrollImage(target){
+      isDrag = false;
       $(target).parent().parent().parent().parent().remove();
     }
 
@@ -307,9 +342,8 @@
           appendScrollImagesToDiv(this);
         });
       }
-      
-
     }
+
     /********Add item to picScroll list*********/
     function saveImageScrollImageInEditOrSave(){
       var result = { };
@@ -351,6 +385,7 @@
                   bottom:''
                 }
               });
+              $("#appendRowOfImageScroll").dialog("close");
             }else{
               $.messager.show({    // show error message
                   title: '提示<span style="color:red;">!</span>',
@@ -369,7 +404,7 @@
     //视频管理
     //载入视频grid中的数据
     function showVideoManage(gdIndex){
-      var rowDatas = $("#dataGrid").datagrid("getRows")[gdIndex].scrollPics;
+      var rowDatas = $("#dataGrid").datagrid("getRows")[gdIndex].timelapseVideos;
       $('#videoTabManageDialog').window('open');
        //清除图片数据
       $('#dgVideoTabManage').datagrid('loadData',[]);
@@ -377,6 +412,78 @@
       for(var i=0; i<rowDatas.length; i++)
         $('#dgVideoTabManage').datagrid('appendRow',rowDatas[i]);
     }
+
+    //载入视频到form，点击视频管理后展现的grid中的数据
+    var manageVideoTabIndex;
+
+    function manageVideoTab(gdIndex){
+      manageVideoTabIndex = gdIndex;
+      $("#videoTabForm").form("clear");
+       
+      var rowDatas = $("#dgVideoTabManage").datagrid("getRows");
+      $('#videoTabGroupDlg').window('open');
+      if(rowDatas&&rowDatas.length>0){
+        var rowDataTmp = rowDatas[gdIndex];
+        $("#videoTabForm").form("load",rowDataTmp);
+        if(rowDataTmp.orderIndex==0){
+          $("#inputOrderIndexVideoTab").val(0);
+        }
+      }
+    }
+
+    /********Add item to Video list*********/
+    function saveVideoTabInEditOrSave(){
+      var result = {};
+      $.each($("#videoTabForm").serializeArray(), function() {
+          result[this.name] = this.value;
+      });
+      //视频类型为1
+      result['tabType'] = 1;
+      //If save
+      if(manageVideoTabIndex<0){
+        //Append data 
+        $('#dgVideoTabManage').datagrid('appendRow',result);
+      }else{
+        $('#dgVideoTabManage').datagrid('updateRow',{
+          index: manageVideoTabIndex,
+          row: result
+        });
+      }
+      //Close dialog
+      $('#videoTabGroupDlg').dialog('close');
+    }
+
+    /*******Post video array to server********/
+    function saveVideoTab(){
+      var postData = {};
+      postData.productInfoId = $("#dataGrid").datagrid("getSelected")._id;
+      postData.timelapseVideos = JSON.stringify($('#dgVideoTabManage').datagrid('getRows'));
+      $.post("/front/productInfo/updateVideoShow", postData, function(result){
+        if(result.success){
+          $.messager.show({    // show error message
+              title: '提示<span style="color:red;">!</span>',
+              msg: "<div style='text-align:center;margin-top:10px;'>修改成功！</div>",
+              style:{
+              right:'',
+              top:document.body.scrollTop+document.documentElement.scrollTop,
+              bottom:''
+            }
+          });
+          $("#videoTabManageDialog").dialog("close");
+        }else{
+          $.messager.show({    // show error message
+              title: '提示<span style="color:red;">!</span>',
+              msg: "<div style='text-align:center;margin-top:10px;'>修改失败！</div>",
+              style:{
+              right:'',
+              top:document.body.scrollTop+document.documentElement.scrollTop,
+              bottom:''
+            }
+          });
+        }
+      });
+    }
+
 
     /**Do search submit**/
     function submitSearchForm(){
@@ -579,18 +686,18 @@
                     <label>点赞次数</label>
                     <input name="praisedUsers" id="praisedUsers_input" class="easyui-validatebox" required="true">
                 </div>
-                <div class="fitem">
+                <!-- <div class="fitem">
                     <label>图片轮播</label>
                     <input name="scrollPics" id="scrollPics_input" class="easyui-validatebox" required="true">
-                </div>
-                <div class="fitem">
+                </div> -->
+                <!-- <div class="fitem">
                     <label>缩时摄像</label>
                     <input name="timelapseVideos" id="timelapseVideos_input" class="easyui-validatebox" required="true">
-                </div>
-                <div class="fitem">
+                </div> -->
+                <!-- <div class="fitem">
                     <label>实时图片</label>
                     <input name="realtimePics" id="realtimePics_input" class="easyui-validatebox" required="true">
-                </div>
+                </div> -->
               <input type="hidden" name="_id" id="_id">
           </form>
       </div>
@@ -607,13 +714,13 @@
           <span>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="managePictureGroup(-1)">新建</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editForm()">修改</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteSelectedItems()">删除</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteScrollImageItem()">删除</a>
           </span>
         </div>
       </div>
       <div id="imageGroupdlg-buttons">
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveImageScrollImageGroup()" style="width:90px">保存</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#appendRowOfImageScroll').dialog('close')" style="width:90px">关闭</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#appendRowOfImageScroll').dialog('close')" style="width:90px">取消</a>
       </div>
       <!--轮播图片Modal End-->
 
@@ -661,28 +768,28 @@
 
 
     <!--视频管理Modal Begin-->
-      <div id="videoTabManageDialog" class="easyui-dialog" title="轮播图片管理" data-options="modal:true,closed:true,iconCls:'icon-save', buttons:'#videoTablg-buttons'" style="width:650px;height:400px;padding:10px;">
+      <div id="videoTabManageDialog" class="easyui-dialog" title="视频管理" data-options="modal:true,closed:true,iconCls:'icon-save', buttons:'#videoTablg-buttons'" style="width:650px;height:400px;padding:10px;">
         <table id="dgVideoTabManage">
         </table>
         <div id="videoTabToolbar" style="text-align:right;">
           <span>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="managePictureGroup(-1)">新建</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="manageVideoTab(-1)">新建</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editForm()">修改</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteSelectedItems()">删除</a>
           </span>
         </div>
       </div>
       <div id="videoTablg-buttons">
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveImageScrollImageGroup()" style="width:90px">保存</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#appendRowOfImageScroll').dialog('close')" style="width:90px">关闭</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveVideoTab()" style="width:90px">保存</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#videoTabManageDialog').dialog('close')" style="width:90px">关闭</a>
       </div>
       <!--视频管理图片Modal End-->
 
 
      <!--新建修改视频内容 Begin-->
-      <div id="videoTabGroupDlg" class="easyui-dialog" title="视频Tab编辑" data-options="modal:true,closed:true,iconCls:'icon-save',buttons:'#videoEditlg-buttons'" style="width:600px;height:700px;padding:10px;" >
+      <div id="videoTabGroupDlg" class="easyui-dialog" title="视频Tab编辑" data-options="modal:true,closed:true,iconCls:'icon-save',buttons:'#videoEditlg-buttons'" style="width:450px;height:400px;padding:10px;" >
           <form id="videoTabForm">
-            <table cellpadding="5" style="width:50%;margin:0 auto 0 auto;text-align:center;">
+            <table cellpadding="5" style="width:90%;margin:0 auto 0 auto;text-align:center;">
               <tr>
                   <td>排序:</td>
                   <td><input class="easyui-textbox" id="inputOrderIndexVideoTab" name="orderIndex" data-options="required:true"></input></td>
@@ -710,7 +817,7 @@
           
       </div> 
       <div id="videoEditlg-buttons">
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveImageScrollImageInEditOrSave()" style="width:90px">保存</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveVideoTabInEditOrSave()" style="width:90px">保存</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#videoTabGroupDlg').dialog('close')" style="width:90px">取消</a>
       </div>      
      <!--新建修改视频内容Grid End-->
