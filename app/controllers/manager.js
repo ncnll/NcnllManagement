@@ -87,7 +87,6 @@ exports.create = function (req, res) {
 
   user.provider = 'local';
   user.save(function (err) {
-    console.log(err);
     if(err){
         res.json({
           success:false,
@@ -215,9 +214,7 @@ exports.changePassword = function(req, res){
 /***************修改密码***************/
 exports.resetPassword = function(req, res){
      //update
-     console.log(req.body._id)
     User.findOne({ _id: req.body._id}, function (err, user) {
-      console.log(user)
       user.password = "5b1b68a9abf4d2cd155c81a9225fd158";
       user.save(function(err){
         if(!err) {
@@ -239,7 +236,6 @@ exports.getUsers = function(req, res){
   delete req.body.rows;
   delete req.body.page;
   req.body.isDeleted = false;
-  console.log(req.body);
   if(req.body.isDisabled==''){
     delete req.body.isDisabled;
   }
@@ -279,7 +275,6 @@ exports.uploadGetStatus = function(req, res) {
 
 exports.teacherSave = function(req, res){
   var user = new User(req.body);
-  console.log(req.body)
   user.save(function (err) {
     if(err){
         res.json({

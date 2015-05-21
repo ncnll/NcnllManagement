@@ -229,13 +229,13 @@
             onStartDrag:function(){
                 console.log("onStartDrag")
                 isDrag=true;
-                $(this).hide(500);
+                $(this).parent().parent().hide(500);
                 $(this).draggable('options').cursor = 'not-allowed';
                 $(this).draggable('proxy').css('z-index',10);
                 
             },
             onStopDrag:function(){
-                $(this).show(500);
+                $(this).parent().parent().show(500);
                 $(this).draggable('options').cursor='move';
                 isDrag=false;
             }
@@ -250,9 +250,9 @@
                 $(source).draggable('options').cursor='not-allowed';
             },
             onDrop:function(e,source){
-                if(isDrag){
-                  $(source).insertBefore(e.target);
-                }
+                //if(isDrag){
+                  $(source).parent().parent().insertBefore($(e.target).parent().parent());
+                //}
             }
         });
     }

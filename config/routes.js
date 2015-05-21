@@ -127,9 +127,6 @@ module.exports = function (app, passport) {
   app.post('/vpi/userLogin',function(req, res, next) {
 
     passport.authenticate('local', function(err, user, info) {
-      // if (err) { return next(err); }
-      console.log(req.body)
-
       if (err || !user) {
          res.json({success:false, error:info["message"]});
          return;
