@@ -23,7 +23,6 @@ module.exports = function (passport, config) {
       passwordField: 'password'
     },
     function(username, password, done) {
-      console.log(Manager)
       Manager.findOne({ username: username }, function (err, user) {
         if (err) { return done(err) }
         if (!user) {
