@@ -28,6 +28,8 @@ var ObjectId = mongoose.Types.ObjectId;
   xvii.次要负责人：producers
   xviii.生产总量 actualAmount{“物品A”:120,“物品B”：222}
   xix.生产预估量estimateAmount{“物品A”:120,“物品B”：222}
+  xx.本条记录新建日期
+  xxh.本条记录修改日期
 
 */
 
@@ -72,7 +74,10 @@ var ProjectSchema = new Schema({
   actualAmount:{type:String, default:'', comment:"生产总量"},
   // xix.生产预估量estimateAmount{“物品A”:120,“物品B”：222}
   estimateAmount:{type:{}, comment:"生产预估量"}
-
+  // xx.新建日期
+  createTime:{type:Date, default:new Date(), comment:"新建日期"},
+  //xxi.修改日期
+  lastModifyTime:{type:Date, default:new Date(), comment:"修改日期"}
 });
 
 
