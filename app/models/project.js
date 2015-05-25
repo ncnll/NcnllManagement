@@ -75,9 +75,9 @@ var ProjectSchema = new Schema({
   // xix.生产预估量estimateAmount{“物品A”:120,“物品B”：222}
   estimateAmount:{type:{}, comment:"生产预估量"}
   // xx.新建日期
-  createTime:{type:Date, default:new Date(), comment:"新建日期"},
+  //createTime:{type:Date, default:new Date(), comment:"新建日期"},
   //xxi.修改日期
-  lastModifyTime:{type:Date, default:new Date(), comment:"修改日期"}
+  //lastModifyTime:{type:Date, default:new Date(), comment:"修改日期"}
 });
 
 
