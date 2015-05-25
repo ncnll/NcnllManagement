@@ -1,5 +1,5 @@
 /*********************************************************************/
-/****************************产品批次Product******************************/
+/****************************产品个体ProductItem******************************/
 /*********************************************************************/
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
@@ -18,7 +18,7 @@ var ObjectId = mongoose.Types.ObjectId;
   ix.生产日期：productDate
 */
 
-var ProductSchema = new Schema({
+var ProductItemSchema = new Schema({
    //_id:{type:ObjectIdSchema, default: new ObjectId()},
    //产品名称
    name: {type : String, default:0, comment:"产品名称"},
@@ -26,6 +26,10 @@ var ProductSchema = new Schema({
    projectId: {type : String, default : '', trim : true, comment:"所属项目ID"},
    //项目名称
    projectName: {type : String, default : 0, comment:"所属项目名称"},
+   //批次id
+   productId:{},
+   //批次名称
+   productName:{},
    //产量
    output: {type : String, default:0, comment:"产量"},
    //单位
@@ -47,7 +51,7 @@ var ProductSchema = new Schema({
 });
 
 
-ProductSchema.statics = {
+ProductItemSchema.statics = {
   queryList: function (options, cb) {
     var criteria = options.criteria || {};
     this.find(criteria)
@@ -58,11 +62,11 @@ ProductSchema.statics = {
       }
 };
 
-mongoose.model('Product', ProductSchema);
+mongoose.model('ProductItem', ProductItemSchema);
 
 /**--------------------------------------------------------------------------**/
 /********手动配置字段Start*******/
-var ObjectSchema = ProductSchema;//Schema upside
+var ObjectSchema = ProductItemSchema;//Schema upside
 var path = "project";//the path to of object
 var endName = "product";//the name of object
 var cnName = "产品";//the chinese name of object

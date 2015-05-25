@@ -44,7 +44,7 @@ var ImageInfoSchema = new Schema({
   //     ii.湿度 humidity : 94%
   //     iii.光照 illumination : 23
   //     iv...............
-  sensorInfos : {type:{},comment:"金额"},
+  sensorInfos : {type:{},comment:"传感器信息"},
   // f)所属项目:  projectId
   projectId : {type:String, default:"", comment:"所属项目"},
   // g)所属项目名称：projectName
