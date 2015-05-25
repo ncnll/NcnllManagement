@@ -40,6 +40,7 @@ var ProjectSchema = new Schema({
   name:{type:String, default:'', comment:"项目名称"},
   // iii.生产点编号: placeId  （临时的地点，用生产者单独的生产点编号，比如一个人 有十块分散的土地，这十块土地算一个生产点。详细在项目地点里面写明。）
   placeId:{type:String, default:'', comment:"生产点编号"},
+  //所属产品
   // iv.项目地点 location
   producePlace:{type:String, default:'', comment:"项目生产地点"},
   // iv.项目地点ID locationId
@@ -75,9 +76,9 @@ var ProjectSchema = new Schema({
   // xix.生产预估量estimateAmount{“物品A”:120,“物品B”：222}
   estimateAmount:{type:{}, comment:"生产预估量"}
   // xx.新建日期
-  createTime:{type:Date, default:new Date(), comment:"新建日期"},
+  //createTime:{type:Date, default:new Date(), comment:"新建日期"},
   //xxi.修改日期
-  lastModifyTime:{type:Date, default:new Date(), comment:"修改日期"}
+  //lastModifyTime:{type:Date, default:new Date(), comment:"修改日期"}
 });
 
 
