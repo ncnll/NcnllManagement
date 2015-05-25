@@ -49,8 +49,10 @@ var ImageInfoSchema = new Schema({
   projectId : {type:String, default:"", comment:"所属项目"},
   // g)所属项目名称：projectName
   projectName : {type:String, default:"", comment:"所属项目名称"},
-  // h)产品ID：productId（可以为空）
+  // h)产品批次ID：productId（可以为空）
   productId : {type:String, default:"", comment:"所属产品ID"},
+  // i)产品个体ID
+  productItemId:{type:String, default:"", comment:"产品个体ID"},
   //i)描述：description
   description:{type:String, default:"", comment:"描述"}
 });

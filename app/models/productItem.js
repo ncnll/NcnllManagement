@@ -5,49 +5,70 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectIdSchema = Schema.ObjectId;
 var ObjectId = mongoose.Types.ObjectId;
-
-/*
-  i.所属项目id : projectId
-  ii.项目名称：projectName
-  iii.产品名称：name
-  iv.产量:output
-  v.单位：unit
-  vi.产品特点描述: description
-  vii.产品分类id：productTypeId
-  viii.产品分类名称: productTypeName
-  ix.生产日期：productDate
-*/
+ 
+  //二维码信息 格式: projectId,productId,_id
+  //产品名称
+  //所属项目ID
+  //项目名称
+  //批次id
+  //批次名称
+  //描述
+  //二维码
+  //照片集合0
+  //照片集合1
+  //照片集合2
+  //照片集合3
+  //照片集合4
+ 
 
 var ProductItemSchema = new Schema({
    //_id:{type:ObjectIdSchema, default: new ObjectId()},
+   //二维码信息 格式: projectId,productId,_id
+   //QRCodes:{type:String, default:"", comment:""}
    //产品名称
    name: {type : String, default:0, comment:"产品名称"},
    //所属项目ID
-   projectId: {type : String, default : '', trim : true, comment:"所属项目ID"},
+   projectId: {type : String, default:'', trim : true, comment:"所属项目ID"},
    //项目名称
    projectName: {type : String, default : 0, comment:"所属项目名称"},
    //批次id
-   productId:{},
+   productId:{type : String, default : 0, comment:"批次id"},
    //批次名称
-   productName:{},
-   //产量
-   output: {type : String, default:0, comment:"产量"},
-   //单位
-   unit:{type : String, default:0, comment:"单位"},
-   // vii.项目开始时间 startTime，
-   startTime:{type:Date, default:'', comment:"生成开始时间"},
-   // viii.项目预估结束时间preEndTime
-   preEndTime:{type:Date, default:'', comment:"该产品批次预估结束时间"},
-   // ix.项目实际结束时间 endTime
-   endTime:{type:Date, default:'', comment:"该产品批次实际结束时间"},
-   //特点描述
-   description: {type : String, default:new Date(), comment:"特点描述"},
-   //产品分类ID
-   productTypeId: {type:String,default:0, comment:"产品分类ID"},
-   //产品分类名称
-   productTypeName: {type:String,default:0, comment:"产品分类名称"},
-   //产品生产日期
-   produceDate : {type:Date, default:new Date(), comment:"生产日期"}
+   productName:{type : String, default : 0, comment:"批次名称"},
+   //描述
+   description: {type : String, default:0, comment:"描述"},
+   //二维码
+   QRCodes:{type:String, default:"", comment:"二维码地址"},
+   //照片集合0
+   pictures0:[{
+      picIds:{type: String},
+      createTime:{type:Date, default:new Date()},
+      description:{type:String,default:""}
+    }],
+    //照片集合1
+   pictures1:[{
+      picIds:{type: String},
+      createTime:{type:Date, default:new Date()},
+      description:{type:String,default:""}
+    }],
+    //照片集合2
+   pictures2:[{
+      picIds:{type: String},
+      createTime:{type:Date, default:new Date()},
+      description:{type:String,default:""}
+    }],
+    //照片集合3
+   pictures3:[{
+      picIds:{type: String},
+      createTime:{type:Date, default:new Date()},
+      description:{type:String,default:""}
+    }],
+    //照片集合4
+   pictures4:[{
+      picIds:{type: String},
+      createTime:{type:Date, default:new Date()},
+      description:{type:String,default:""}
+    }]
 });
 
 
@@ -68,8 +89,8 @@ mongoose.model('ProductItem', ProductItemSchema);
 /********手动配置字段Start*******/
 var ObjectSchema = ProductItemSchema;//Schema upside
 var path = "project";//the path to of object
-var endName = "product";//the name of object
-var cnName = "产品";//the chinese name of object
+var endName = "productItem";//the name of object
+var cnName = "产品个体";//the chinese name of object
 /********手动配置字段End*******/
 
 var firstNameCapital = endName.charAt(0).toUpperCase()+endName.slice(1);
