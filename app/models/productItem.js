@@ -14,61 +14,98 @@ var ObjectId = mongoose.Types.ObjectId;
   //批次名称
   //描述
   //二维码
+  //照片集合描述
   //照片集合0
   //照片集合1
   //照片集合2
   //照片集合3
   //照片集合4
- 
 
 var ProductItemSchema = new Schema({
-   //_id:{type:ObjectIdSchema, default: new ObjectId()},
-   //二维码信息 格式: projectId,productId,_id
-   //QRCodes:{type:String, default:"", comment:""}
-   //产品名称
-   name: {type : String, default:0, comment:"产品名称"},
-   //所属项目ID
-   projectId: {type : String, default:'', trim : true, comment:"所属项目ID"},
-   //项目名称
-   projectName: {type : String, default : 0, comment:"所属项目名称"},
-   //批次id
-   productId:{type : String, default : 0, comment:"批次id"},
-   //批次名称
-   productName:{type : String, default : 0, comment:"批次名称"},
-   //描述
-   description: {type : String, default:0, comment:"描述"},
-   //二维码
-   QRCodes:{type:String, default:"", comment:"二维码地址"},
+    //_id:{type:ObjectIdSchema, default: new ObjectId()},
+    //二维码信息 格式: projectId,productId,_id
+    //QRCodes:{type:String, default:"", comment:""}
+    //产品名称
+    name: {type : String, default:0, comment:"产品名称"},
+    //所属项目ID
+    projectId: {type : String, default:'', trim : true, comment:"所属项目ID"},
+    //项目名称
+    projectName: {type : String, default : 0, comment:"所属项目名称"},
+    //批次id
+    productId:{type : String, default : 0, comment:"批次id"},
+    //批次名称
+    productName:{type : String, default : 0, comment:"批次名称"},
+    //描述
+    description: {type : String, default:0, comment:"描述"},
+    //二维码
+    QRCodes:{type:String, default:"", comment:"二维码地址"},
+
+    //记录图片
+    historyImages:[{
+      picIds:[{
+        picId:{type: String},
+        createTime:{type:Date, default:new Date()},
+        description:{type:String,default:""}
+      }],
+      createTime:{type:Date, default:new Date()},
+      description:{type:String,default:""}
+    }]
+
+   /*//照片集合描述
+   picturesDescriptions:[
+    {type:String, default:"", comment:"照片集合描述"}
+   ],
    //照片集合0
    pictures0:[{
       picIds:{type: String},
-      createTime:{type:Date, default:new Date()},
-      description:{type:String,default:""}
+      createTime:{type:Date, default:new Date()} 
     }],
     //照片集合1
    pictures1:[{
       picIds:{type: String},
-      createTime:{type:Date, default:new Date()},
-      description:{type:String,default:""}
+      createTime:{type:Date, default:new Date()}
     }],
     //照片集合2
    pictures2:[{
       picIds:{type: String},
-      createTime:{type:Date, default:new Date()},
-      description:{type:String,default:""}
+      createTime:{type:Date, default:new Date()}
     }],
     //照片集合3
    pictures3:[{
       picIds:{type: String},
-      createTime:{type:Date, default:new Date()},
-      description:{type:String,default:""}
+      createTime:{type:Date, default:new Date()}
     }],
     //照片集合4
    pictures4:[{
       picIds:{type: String},
-      createTime:{type:Date, default:new Date()},
-      description:{type:String,default:""}
-    }]
+      createTime:{type:Date, default:new Date()}
+    }],
+    //照片集合5
+   pictures5:[{
+      picIds:{type: String},
+      createTime:{type:Date, default:new Date()}
+    }],
+    //照片集合6
+   pictures6:[{
+      picIds:{type: String},
+      createTime:{type:Date, default:new Date()}
+    }],
+    //照片集合7
+   pictures7:[{
+      picIds:{type: String},
+      createTime:{type:Date, default:new Date()}
+    }],
+    //照片集合8
+   pictures8:[{
+      picIds:{type: String},
+      createTime:{type:Date, default:new Date()}
+    }],
+    //照片集合9
+   pictures9:[{
+      picIds:{type: String},
+      createTime:{type:Date, default:new Date()}
+    }]*/
+
 });
 
 

@@ -78,6 +78,9 @@ module.exports = function (app, passport) {
   /**上传文件**/
   app.post("/index/uploadCommonFile", indexRoute.uploadCommonFile);
 
+  /**相机上传文件**/
+  app.post("/index/uploadCameraPhoto", indexRoute.uploadCameraPhoto);
+
   //消费记录管理管理
   app.get("/consumer/consumptionRecord/toSearchList", consumptionRecordCtrl.toSearchList);
   app.post("/consumer/consumptionRecord/searchList", consumptionRecordCtrl.searchList);

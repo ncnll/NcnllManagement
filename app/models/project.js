@@ -74,13 +74,21 @@ var ProjectSchema = new Schema({
   // xviii.生产总量 actualAmount{“物品A”:120,“物品B”：222}
   actualAmount:{type:String, default:'', comment:"生产总量"},
   // xix.生产预估量estimateAmount{“物品A”:120,“物品B”：222}
-  estimateAmount:{type:{}, comment:"生产预估量"}
+  estimateAmount:{type:{}, comment:"生产预估量"},
+  //记录图片
+  historyImages:[{
+    picIds:[{
+      picId:{type: String},
+      createTime:{type:Date, default:new Date()}
+    }],
+    createTime:{type:Date, default:new Date()},
+    description:{type:String,default:""}
+  }]
   // xx.新建日期
   //createTime:{type:Date, default:new Date(), comment:"新建日期"},
   //xxi.修改日期
   //lastModifyTime:{type:Date, default:new Date(), comment:"修改日期"}
 });
-
 
 ProjectSchema.statics = {
   queryList: function (options, cb) {

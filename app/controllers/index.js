@@ -40,3 +40,25 @@ exports.uploadCommonFile = function(req, res){
     }
     	
 };
+
+
+/**Camera File upload**/
+exports.uploadCameraPhoto = function(req, res){
+    console.log(req.body)
+    if(req.files && req.files.file){
+        res.json(req.files);
+        /*fs.rename(req.files.file.path, "./public/uploadimages/"+req.files.file.name, function(err){
+            if(err){
+                res.json(err);
+            }else{
+                res.json(req.files);
+            }
+        });*/
+    }else{
+        res.json({
+            success:false,
+            msg:"没有文件"
+        });
+    }
+        
+};
