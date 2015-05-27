@@ -46,13 +46,15 @@ exports.uploadCommonFile = function(req, res){
 
 /**Camera File upload**/
 exports.uploadCameraPhoto = function(req, res){
-    if(req.files && req.files.file){
+
+    console.log(req.body)
+
+    if(req.files && req.files.file && /^[0-9]*$/.test(req.body.index)){
         if(req.body.productItemId){
             var proItemImage = {};
             proItemImage['historyImages.'+req.body.index+'.picIds']={
-                "picId" : "13241234",
-                "createTime" : new Date(),
-                "description" : "Nice job"
+                "picId" : req.files.file.name,
+                "createTime" : new Date()
             };
             ProductItemModel.update({ _id: req.body.productItemId},{ $push: proItemImage },{upsert: true},function(err,result){
                 if(err){
@@ -68,10 +70,10 @@ exports.uploadCameraPhoto = function(req, res){
                     });
                 }
             });
-        }else{
+        }else if(req.body.projectId){
             var projectImage = {};
             projectImage['historyImages.'+req.body.index+'.picIds']={
-                "picId" : "13241234",
+                "picId" : req.files.file.name,
                 "createTime" : new Date(),
                 "description" : "Nice job"
             };
@@ -89,10 +91,12 @@ exports.uploadCameraPhoto = function(req, res){
                     });
                 }
             });
+        }else{
+            res.json({
+                        success:false,
+                        msg:"参数错误！"
+                    }); 
         }
-        
-
-
         //Get project id, image index; or Get projectItem id, image Index; Store.
         //Get cameraId--Get related projectid or projectItemId, Store 
         /*fs.rename(req.files.file.path, "./public/uploadimages/"+req.files.file.name, function(err){
@@ -105,7 +109,7 @@ exports.uploadCameraPhoto = function(req, res){
     }else{
         res.json({
             success:false,
-            msg:"没有文件"
+            msg:"没有文件或参数错误!"
         });
     }
         
