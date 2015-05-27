@@ -23,9 +23,17 @@ var productCtrl = require('../app/controllers/project/product');
 var productTypeCtrl = require('../app/controllers/project/productType');
 //项目Ctrl
 var projectCtrl = require('../app/controllers/project/project');
+//产品个体管理Ctrl
+var productItemCtrl = require('../app/controllers/project/productItem');
  /*  , auth = require('./middlewares/authorization')*/
 var indexRoute = require("../app/controllers/index");
+
 var auth = require('./middlewares/authorization');
+
+
+
+
+
 
 /***************/
 //用户信息管理Ctrl
@@ -118,6 +126,13 @@ module.exports = function (app, passport) {
   app.post("/project/project/save", projectCtrl.add);
   app.post("/project/project/remove", projectCtrl.remove);
   app.post("/project/project/update", projectCtrl.updateById);
+
+  //产品个体管理
+  app.get("/project/productItem/toSearchList", productItemCtrl.toSearchList);
+  app.post("/project/productItem/searchList", productItemCtrl.searchList);
+  app.post("/project/productItem/save", productItemCtrl.add);
+  app.post("/project/productItem/remove", productItemCtrl.remove);
+  app.post("/project/productItem/update", productItemCtrl.updateById);
 
   app.get("/hello", indexRoute.index );
   app.get("/indexData",indexRoute.indexData);

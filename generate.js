@@ -39,8 +39,8 @@ exports.config = config;*/
 /************************CONFIG INFO END**********************/
 
 //Models' names are configed here!
-var modelNames = ['brand', 'category', 'productInfo', 'user'];
-var modelPath = "./app/models/front/";
+var modelNames = ['productItem'];
+var modelPath = "./app/models/";
 
 
 //Load templates

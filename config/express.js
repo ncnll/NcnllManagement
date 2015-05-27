@@ -112,24 +112,17 @@ module.exports = function (app, config, passport) {
         return mongoose.Types.ObjectId()
       },
       onFileUploadComplete: function (file) {
-
-         fs.rename("./uploads/"+file.name, "./public/images/"+file.name, function(err) {
-
+        fs.rename("./uploads/"+file.name, "./public/images/"+file.name, function(err) {
           var opts = options.imageVersions["thumbnail"];
-            imageMagick.resize({
-                width: opts.width,
-                height: opts.height,
-                srcPath: "./public/images/"+file.name,
-                dstPath: options.uploadDir + '/thumbnail/'+ file.name
-            }, function(){
-              console.log("Converted from "+"./public/images/"+file.name+" to "+ options.uploadDir + '/thumbnail/'+ file.name+" OK")
-            });
-
-
-           console.log("./uploads/"+file.name + ' uploaded to  ' + "./public/images/"+file.name)
-
-         });
-
+          imageMagick.resize({
+            width: opts.width,
+            height: opts.height,
+            srcPath: "./public/images/"+file.name,
+            dstPath: options.uploadDir + '/thumbnail/'+ file.name
+          }, function(){
+            console.log("Converted from "+"./public/images/"+file.name+" to "+ options.uploadDir + '/thumbnail/'+ file.name+" OK")
+          });
+        });
       }
     }));
 
