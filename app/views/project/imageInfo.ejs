@@ -99,14 +99,17 @@
             columns:[[
                       //{field:'ck', checkbox:true},
                         {field:'cameraSerialId', title:'相机编号', width:120},
+                        {field:"deviceCpuId", title:"设备CPU序列号", width:150},
                         {field:'uploadTime', title:'上传时间', width:120},
                         {field:'platform', title:'所属平台', width:120},
                         {field:'createTime', title:'摄像时间', width:120},
                         {field:'sensorInfos', title:'金额', width:120},
                         {field:'projectId', title:'所属项目', width:120},
                         {field:'projectName', title:'所属项目名称', width:120},
-                        {field:'productId', title:'所属产品ID', width:120},
+                        {field:'productId', title:'所属产品批次ID', width:120},
+                        {field:'productItemId', title:'所属产品个体ID', width:120},
                         {field:'description', title:'描述', width:120},
+                        
                       {field:'_id', title:'编号', hidden:true}
             ]],
             onLoadError: function(msge){
@@ -284,6 +287,11 @@
                     <input name="cameraSerialId" id="cameraSerialId_input" class="easyui-validatebox" required="true">
                 </div>
                 <div class="fitem">
+                    <label>设备CPU编号</label>
+                    <input name="deviceCpuId" id="deviceCpuId_input" class="easyui-validatebox" required="true">
+                </div>
+                
+                <div class="fitem">
                     <label>上传时间</label>
                     <input name="uploadTime" id="uploadTime_input" class="easyui-validatebox" required="true">
                 </div>
@@ -308,8 +316,12 @@
                     <input name="projectName" id="projectName_input" class="easyui-validatebox" required="true">
                 </div>
                 <div class="fitem">
-                    <label>所属产品ID</label>
+                    <label>所属产品批次ID</label>
                     <input name="productId" id="productId_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>所属产品个体ID</label>
+                    <input name="productItemId" id="productId_input" class="easyui-validatebox" required="true">
                 </div>
                 <div class="fitem">
                     <label>描述</label>

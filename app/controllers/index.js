@@ -1,8 +1,7 @@
 var express = require('express');
 var fs = require('fs');
 var mongoose = require('mongoose');
-var ProductItemModel = mongoose.model('ProductItem');
-var ProjectModel = mongoose.model('Project');
+var ImageInfoModel = mongoose.model('ImageInfo');
 /* GET home page. */
 exports.index =function(req, res) {
     res.render('index', { title: 'ncnll' });
@@ -50,62 +49,25 @@ exports.uploadCameraPhoto = function(req, res){
     console.log(req.body)
 
     if(req.files && req.files.file && /^[0-9]*$/.test(req.body.index)){
-        if(req.body.productItemId){
-            var proItemImage = {};
-            proItemImage['historyImages.'+req.body.index+'.picIds']={
-                "picId" : req.files.file.name,
-                "createTime" : new Date()
-            };
-            ProductItemModel.update({ _id: req.body.productItemId},{ $push: proItemImage },{upsert: true},function(err,result){
-                if(err){
-                    res.json({
-                        success:false,
-                        msg:"没有文件",
-                        error:err
-                    }); 
-                }else{
-                    res.json({
-                        "file":req.files,
-                        "productItem":result
-                    });
-                }
-            });
-        }else if(req.body.projectId){
-            var projectImage = {};
-            projectImage['historyImages.'+req.body.index+'.picIds']={
-                "picId" : req.files.file.name,
-                "createTime" : new Date(),
-                "description" : "Nice job"
-            };
-            ProjectModel.update({ _id: req.body.projectId},{ $push: projectImage },{upsert: true},function(err,result){
-                if(err){
-                    res.json({
-                        success:false,
-                        msg:"没有文件",
-                        error:err
-                    }); 
-                }else{
-                    res.json({
-                        "file":req.files,
-                        "result":result
-                    });
-                }
-            });
-        }else{
-            res.json({
-                        success:false,
-                        msg:"参数错误！"
-                    }); 
-        }
-        //Get project id, image index; or Get projectItem id, image Index; Store.
-        //Get cameraId--Get related projectid or projectItemId, Store 
-        /*fs.rename(req.files.file.path, "./public/uploadimages/"+req.files.file.name, function(err){
+         
+         var imageInfo = new ImageInfoModel(req.body);
+         imageInfo.uploadTime=new Date();
+         imageInfo.save(function(err,result){
             if(err){
-                res.json(err);
+                res.json({
+                    success:false,
+                    msg:"没有文件",
+                    error:err
+                }); 
             }else{
-                res.json(req.files);
+                res.json({
+                    "file":req.files,
+                    "productItem":result
+                });
             }
-        });*/
+         });
+               
+        
     }else{
         res.json({
             success:false,
