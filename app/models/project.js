@@ -75,12 +75,10 @@ var ProjectSchema = new Schema({
   actualAmount:{type:String, default:'', comment:"生产总量"},
   // xix.生产预估量estimateAmount{“物品A”:120,“物品B”：222}
   estimateAmount:{type:{}, comment:"生产预估量"},
-  //记录图片
-  historyImages:[{
-    picIds:[{
-      picId:{type: String},
-      createTime:{type:Date, default:new Date()}
-    }],
+  //相机视角
+  cameraViews:[{
+    cameraId:{type:String,default:""},
+    title:{type:String,default:""},
     createTime:{type:Date, default:new Date()},
     description:{type:String,default:""}
   }]

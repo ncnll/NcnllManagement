@@ -4,7 +4,7 @@ var mongoose = require('mongoose')
   , passport = require('passport');
 
 exports.toSearchList = function(req, res){
-  res.render("project/product",{object_name:"产品"});
+  res.render("project/product",{object_name:"产品批次"});
 };
 
 exports.searchList = function(req, res) {

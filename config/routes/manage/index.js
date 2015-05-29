@@ -81,7 +81,7 @@ module.exports = function (app, passport) {
                                     "id":14,
                                     "linkUrl":"/project/productType/toSearchList"
                                 },{
-                                    "name":"产品管理",
+                                    "name":"产品批次管理",
                                     "id":15,
                                     "linkUrl":"/project/product/toSearchList"
                                 },{
