@@ -77,6 +77,8 @@ var ProjectSchema = new Schema({
   estimateAmount:{type:{}, comment:"生产预估量"},
   //相机视角
   cameraViews:[{
+    orderIndex:{type:Number, default:""},
+   // viewId:{type:String,default:""},
     cameraId:{type:String,default:""},
     title:{type:String,default:""},
     createTime:{type:Date, default:new Date()},
