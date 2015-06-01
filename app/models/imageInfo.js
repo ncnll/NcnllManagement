@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 var ObjectIdSchema = Schema.ObjectId;
 var ObjectId = mongoose.Types.ObjectId;
 
-/*
+/* 
   a)图片存储(云空间)
       i.图片口令验证 :token
       ii.图片裁剪存储（缩略图）:
