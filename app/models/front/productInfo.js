@@ -20,6 +20,8 @@ var ProductInfoSchema = new Schema({
   linkToBuy:{type:String, default:'', comment:"购买链接"},
   //所属用户
   user:{type: Schema.ObjectId, ref:'User', comment:"所属用户"},
+  //所属项目
+  projectId:{type:String, default:'', comment:"所属项目"},
   //item展示图片
   indexImgIds:{
     type:[{

@@ -52,6 +52,7 @@ exports.uploadCameraPhoto = function(req, res){
          
          var imageInfo = new ImageInfoModel(req.body);
          imageInfo.uploadTime=new Date();
+         imageInfo.name=req.files.file.name;
          imageInfo.save(function(err,result){
             if(err){
                 res.json({
