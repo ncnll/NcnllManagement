@@ -73,36 +73,3 @@ ImageInfoSchema.statics = {
 
 mongoose.model('ImageInfo', ImageInfoSchema);
 
-//The following code is need append to all the model file.
-//And need to be modified.
-/**********************CONFIG INFO BEGIN************************/
-
-//********手动配置字段Start******
-var ObjectSchema =ImageInfoSchema;//Schema upside
-var path = "project";//the path to of object
-var endName = "imageInfo";//the name of object
-var cnName = "图片信息";//the chinese name of object
-//********手动配置字段End*******
-
-var firstNameCapital = endName.charAt(0).toUpperCase()+endName.slice(1);
-var config={
-  path:path,
-  name:endName,
-  firstNameCapital:firstNameCapital,
-  shema:ObjectSchema,
-  cnName:cnName
-};
-
-//Get properties key value
-var keyValues=[];
-for(var prop in ObjectSchema.tree){
-  if(prop=="__v" || prop=="_id" || prop=="id"){
-    continue;
-  }
-  keyValues.push({name:prop, comment:ObjectSchema.tree[prop].comment, type:ObjectSchema.tree[prop].type});
-}
-exports.keyValues = keyValues;
-exports.config = config;
-
-
-/************************CONFIG INFO END**********************/
