@@ -49,6 +49,7 @@ exports.updateById = function(req, res){
       return;
     }
     CameraModel.findOneAndUpdate({ _id:req.body._id},req.body, function (err, obj) {
+      console.log(err)
       utils.setSaveResponse(err, res, obj);
     });
 

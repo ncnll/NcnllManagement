@@ -1,10 +1,10 @@
 var mongoose = require('mongoose')
-  , CommonModel = mongoose.model('ProductItem')
+  , CommonModel = mongoose.model('Camera')
   , utils = require('../../lib/utils')
   , passport = require('passport');
 
 exports.toSearchList = function(req, res){
-  res.render("project/productItem",{object_name:"产品个体"});
+  res.render("device/camera",{object_name:"相机信息"});
 };
 
 exports.searchList = function(req, res) {

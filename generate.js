@@ -38,8 +38,8 @@ exports.config = config;*/
 
 /************************CONFIG INFO END**********************/
 
-//Models' names are configed here!
-var modelNames = ['productItem'];
+//Models' names are configed here! (The file name of the model)
+var modelNames = ['camera'];
 var modelPath = "./app/models/";
 
 

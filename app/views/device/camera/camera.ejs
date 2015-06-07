@@ -23,7 +23,7 @@
        .fitem label{
             text-align:right;
            display:inline-block;
-           width:100px;
+           width:170px;
            font-weight:bold;
        }
 
@@ -40,8 +40,8 @@
        }
 
        #dlg{
-        width:350px;
-        height:280px;
+        width:450px;
+        height:580px;
        }
 
        #dlg .ftitle{
@@ -68,7 +68,7 @@
             toolbar:'#toolbar',
             pagination:true,
             collapsible:true,
-            title:"<%= object_name %>列表",
+            title:"相机信息列表",
             rownumbers:true,
             queryParams:{userrole:1},
             loadFilter:function(data){
@@ -98,16 +98,30 @@
             pageList:[10,20,30,40,50],
             columns:[[
                       //{field:'ck', checkbox:true},
-                      {field:'_id', title:'编号' , width:120,hidden:true},
-                      {field:'serialNumber', title:'设备CPU序列号', width:150},
-                      {field:'code', title:'设备编号', width:180},
-                      {field:'type', title:'设备类型', width:180},
-                      {field:'usedProjects', title:'使用记录', width:180},
-                      {field:'components', title:'配件', width:180},
-                      {field:'boughtDate', title:'购买日期', width:180},
-                      {field:'cost', title:'价值', width:180},
-                      {field:'status', title:'状态', width:180},
-                      {field:'description', title:'描述', width:180}
+                        {field:'serialNumber', title:'相机编号', width:120},
+                        {field:'code', title:'人类可读数字编号', width:120},
+                        {field:'type', title:'相机型号', width:120},
+                        {field:'usedProjects', title:'', width:120},
+                        {field:'components', title:'', width:120},
+                        {field:'boughtDate', title:'购买日期', width:120},
+                        {field:'cost', title:'价值', width:120},
+                        {field:'status', title:'状态', width:120},
+                        {field:'description', title:'描述', width:120},
+                        {field:'projectId', title:'所属项目', width:120},
+                        {field:'projectName', title:'所属项目名称', width:120},
+                        {field:'productId', title:'所属产品批次ID', width:120},
+                        {field:'productItemId', title:'产品个体ID', width:120},
+                        {field:'cameraType', title:'拍摄类型', width:120},
+                        {field:'localShootInterval', title:'本地存储周期', width:120},
+                        {field:'uploadShootInterval', title:'上传服务器周期', width:120},
+                        {field:'workingTime', title:'一天中摄像机工作时间', width:120},
+                        {field:'localResolution', title:'本地分辨率', width:120},
+                        {field:'remoteResolution', title:'上传用分辨率', width:120},
+                        {field:'updateTime', title:'最近更新时间', width:120},
+                        {field:'startDate', title:'拍摄开始日期', width:120},
+                        {field:'endDate', title:'拍摄结束日期', width:120},
+                        {field:'uploadPath', title:'图片上传地址', width:120},
+                      {field:'_id', title:'编号', hidden:true}
             ]],
             onLoadError: function(msge){
                 $.messager.alert('错误信息','服务器连接已断开或服务器内部错误！','error');
@@ -115,6 +129,7 @@
         });
 
       });
+/********************************************************Initial the page end*****************************************************/
 
       /**Do search submit**/
       function submitSearchForm(){
@@ -143,7 +158,6 @@
       function newForm(){
           $('#dlg').dialog('open').dialog('setTitle','<%= object_name %>新增');
           $('#fm').form('clear');
-          $('#usernameId').removeAttr('disabled');
           url = '/device/camera/save';
       }
       /**Open edit form **/
@@ -279,44 +293,99 @@
 
       <div id="dlg" class="easyui-dialog" data-options="closed:'true',modal:true,buttons:'#dlg-buttons'">
           <form id="fm" method="post" >
-            <div class="fitem">
-                <label>设备CPU序列号：</label>
-                <input name="serialNumber" id="serialNumber_input" class="easyui-validatebox" required="true">
-            </div>
-            <div class="fitem">
-                <label>设备编号：</label>
-                <input name="code" id="code_input" class="easyui-validatebox">
-            </div>
-            <div class="fitem">
-                <label>设备类型：</label>
-                <input name="type" id="type_input" class="easyui-validatebox">
-            </div>
-            <div class="fitem">
-                <label>使用记录：</label>
-                <input name="usedProjects" id="usedProjects_input" class="easyui-validatebox">
-            </div>
-            <div class="fitem">
-                <label>配件：</label>
-                <input name="components" id="components_input" class="easyui-validatebox">
-            </div>
-            <div class="fitem">
-                <label>购买日期：</label>
-                <input name="boughtDate" id="code_input" class="easyui-validatebox">
-            </div>
-            <div class="fitem">
-                <label>价值：</label>
-                <input name="cost" id="code_input" class="easyui-validatebox">
-            </div>
-            <div class="fitem">
-                <label>状态：</label>
-                <input name="status" id="code_input" class="easyui-validatebox">
-            </div>
-            <div class="fitem">
-                <label>描述：</label>
-                <input name="description" id="code_input" class="easyui-validatebox">
-            </div>
-
-            <input type="hidden" name="_id" id="_id">
+                <div class="fitem">
+                    <label>相机编号</label>
+                    <input name="serialNumber" id="serialNumber_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>人类可读数字编号</label>
+                    <input name="code" id="code_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>相机型号</label>
+                    <input name="type" id="type_input" class="easyui-validatebox" required="true">
+                </div>
+               <!--  <div class="fitem">
+                    <label></label>
+                    <input name="usedProjects" id="usedProjects_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label></label>
+                    <input name="components" id="components_input" class="easyui-validatebox" required="true">
+                </div> -->
+                <div class="fitem">
+                    <label>购买日期</label>
+                    <input name="boughtDate" id="boughtDate_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>价值</label>
+                    <input name="cost" id="cost_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>状态</label>
+                    <input name="status" id="status_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>描述</label>
+                    <input name="description" id="description_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>所属项目</label>
+                    <input name="projectId" id="projectId_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>所属项目名称</label>
+                    <input name="projectName" id="projectName_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>所属产品批次ID</label>
+                    <input name="productId" id="productId_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>产品个体ID</label>
+                    <input name="productItemId" id="productItemId_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>拍摄类型</label>
+                    <input name="cameraType" id="cameraType_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>本地存储周期</label>
+                    <input name="localShootInterval" id="localShootInterval_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>上传服务器周期</label>
+                    <input name="uploadShootInterval" id="uploadShootInterval_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>一天中摄像机工作时间</label>
+                    <input name="workingTime" id="workingTime_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>本地分辨率</label>
+                    <input name="localResolution" id="localResolution_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>上传用分辨率</label>
+                    <input name="remoteResolution" id="remoteResolution_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>最近更新时间</label>
+                    <input name="updateTime" id="updateTime_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>拍摄开始日期</label>
+                    <input name="startDate" id="startDate_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>拍摄结束日期</label>
+                    <input name="endDate" id="endDate_input" class="easyui-validatebox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>图片上传地址</label>
+                    <input name="uploadPath" id="uploadPath_input" class="easyui-validatebox" required="true">
+                </div>
+              <input type="hidden" name="_id" id="_id">
           </form>
       </div>
       <div id="dlg-buttons">
