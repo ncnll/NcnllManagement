@@ -126,6 +126,8 @@ module.exports = function (app, passport) {
   app.post("/project/project/save", projectCtrl.add);
   app.post("/project/project/remove", projectCtrl.remove);
   app.post("/project/project/update", projectCtrl.updateById);
+  app.post("/project/project/updateCamera", projectCtrl.updateCameras);
+
 
   //产品个体管理
   app.get("/project/productItem/toSearchList", productItemCtrl.toSearchList);
@@ -178,6 +180,8 @@ module.exports = function (app, passport) {
   app.post("/front/productInfo/save", productInfoCtrl.add);
   app.post("/front/productInfo/updateScrollImage", productInfoCtrl.updateScrollImage);
   app.post("/front/productInfo/updateVideoShow", productInfoCtrl.updateVideoShow);
+  app.post("/front/productInfo/updateHistoryCamera", productInfoCtrl.updateHistoryCamera);
+  
   app.post("/front/productInfo/remove", productInfoCtrl.remove);
   app.post("/front/productInfo/update", productInfoCtrl.updateById);
    //产品分类管理

@@ -20,6 +20,7 @@ exports.searchList = function(req, res) {
       return;
     }
     CommonModel.queryList({rows:req.body.rows, page:req.body.page, criteria:crite, sort:sortObj}, function(err,list){
+
       utils.setQueryListResponse(err, req, res, list, count);
     });
   });

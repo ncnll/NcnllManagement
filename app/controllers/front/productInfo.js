@@ -98,3 +98,25 @@ exports.updateVideoShow = function(req, res){
   });
   
 }
+
+
+//更新视频tab
+exports.updateHistoryCamera = function(req, res){
+  //var scrollImages = req
+  CommonModel.findOneAsync({ _id:req.body.productInfoId}).then(function(productInfo) {
+    if(productInfo){
+      return productInfo;
+    }else{
+      return Promise.reject(new Error());
+    }
+  }).then(function(productInfo){
+    var realtimePics = eval('('+req.body.realtimePics+')');
+    return CommonModel.updateAsync({_id:req.body.productInfoId}, {realtimePics:realtimePics}, {multi:true});
+  }).then(function(raw){
+    utils.setSaveResponse(undefined, res, raw);
+  }).catch(function(e){
+    //e?1:e=new Error("未知错误");
+    utils.setSaveResponse(e, res, undefined);
+  });
+  
+}

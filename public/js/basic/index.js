@@ -18,7 +18,6 @@ var openMainTab = function(node) {
 			$("#divTab_Main").tabs('select', i);
 			isNotExisted = false;// tab已存在
 			document.getElementById("iframeTab_"+ node.tId).contentWindow.location.reload();
-			console.log("-----------------")
 		}
 	}
 	if (isNotExisted) {

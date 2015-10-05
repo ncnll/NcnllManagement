@@ -10,6 +10,9 @@ exports.toSearchList = function(req, res){
 exports.searchList = function(req, res) {
   var crite = utils.setCriteriaParam(req.body);
   var sortObj = utils.setSortParam(req.body);
+
+  console.log(req.body)
+
   CameraModel.count(crite, function(errors, count){
     if(errors){
       res.json({
@@ -20,6 +23,7 @@ exports.searchList = function(req, res) {
       return;
     }
     CameraModel.queryList({rows:req.body.rows, page:req.body.page, criteria:crite, sort:sortObj}, function(err,list){
+      console.log(list)
       utils.setQueryListResponse(err, req, res, list, count);
     });
   });

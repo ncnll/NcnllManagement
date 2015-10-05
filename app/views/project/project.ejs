@@ -109,11 +109,37 @@
                         {field:'producePlaceId', title:'项目地点ID', width:120},
                         {field:'gps', title:'经纬度', width:120},
                         {field:'description', title:'项目描述', width:120},
-                        {field:'startTime', title:'startTime', width:120},
-                        {field:'preEndTime', title:'项目预估结束时间', width:120},
-                        {field:'endTime', title:'项目实际结束时间', width:120},
+                        {field:'startTime', title:'startTime', width:120,formatter:function(value,row,index){
+                          if(value){
+                            row.startTime = new Date(value.replace(/T/, ' ').replace(/\..+/, ''));
+                            row.startTime = new Date(row.startTime.valueOf()-row.startTime.getTimezoneOffset() * 60000);
+                            row.startTime = row.startTime.getFullYear()+"-"+(row.startTime.getMonth()+1)+"-"+ row.startTime.getDate() +" "+row.startTime.getHours()+":"+row.startTime.getMinutes()+":"+row.startTime.getSeconds();
+                            return row.startTime;   
+                          }
+                        }},
+                        {field:'preEndTime', title:'项目预估结束时间', width:120,formatter:function(value,row,index){
+                          if(value){
+                            row.preEndTime = new Date(value.replace(/T/, ' ').replace(/\..+/, ''));
+                            row.preEndTime = new Date(row.preEndTime.valueOf()-row.preEndTime.getTimezoneOffset() * 60000);
+                            row.preEndTime = row.preEndTime.getFullYear()+"-"+(row.preEndTime.getMonth()+1)+"-"+ row.preEndTime.getDate() +" "+row.preEndTime.getHours()+":"+row.preEndTime.getMinutes()+":"+row.preEndTime.getSeconds();
+                            return row.preEndTime;     
+                          }  
+                        }},
+                        {field:'endTime', title:'项目实际结束时间', width:120,formatter:function(value,row,index){
+                          if(value){
+                            row.endTime = new Date(value.replace(/T/, ' ').replace(/\..+/, ''));
+                            row.endTime = new Date(row.endTime.valueOf()-row.endTime.getTimezoneOffset() * 60000);
+                            row.endTime = row.endTime.getFullYear()+"-"+(row.endTime.getMonth()+1)+"-"+ row.endTime.getDate() +" "+row.endTime.getHours()+":"+row.endTime.getMinutes()+":"+row.endTime.getSeconds();
+                            return row.endTime;   
+                          }   
+                        }},
                         {field:'type', title:'项目类型', width:120},
                         {field:'cameraIds', title:'相机IDs', width:120},
+                        {field:'cameraViews', title:'相机管理', width:120,
+                          formatter: function(value,row,index){
+                            return "<a href='javascript:showCameraManage("+index+")'>相机管理</a>";  
+                          }
+                        },
                         {field:'preContained', title:'前一环节项目产品纳入量', width:120},
                         {field:'nextOutput', title:'下一个环节项目纳出', width:120},
                         {field:'preProjects', title:'关联的前面所有项目编号', width:120},
@@ -129,7 +155,119 @@
             }
         });
 
+        //相机管理
+        $("#dgCameraManage").datagrid({
+            title:"相机列表",
+            singleSelect:true,
+            toolbar:"#cameraToolbar",
+            columns:[[
+              //{field:'ck', checkbox:true},
+              {field:'title', title:'相机标题', width:120},
+              {field:'cameraId', title:'相机serialId'},
+              {field:'viewIndex', title:'相机排序', width:120},
+              {field:'description', title:'描述', width:220},
+              {field:'operation', title:'操作', width:120, formatter: function(value,row,index){
+                  return "<a href='javascript:manageCamera("+index+")'>编辑</a>";  
+                }
+              }
+            ]]
+        });
+
+
       });
+
+
+    //相机管理
+    //载入相机grid中的数据
+    function showCameraManage(gdIndex){
+      var rowDatas = $("#dataGrid").datagrid("getRows")[gdIndex].cameraViews;
+      $('#cameraManageDialog').window('open');
+       //清除图片数据
+      $('#dgCameraManage').datagrid('loadData',[]);
+      //载入图片数据
+      for(var i=0; i<rowDatas.length; i++){
+        $('#dgCameraManage').datagrid('appendRow',rowDatas[i]);
+      }
+    }
+
+    //载入相机到form，点击相机管理后展现的grid中的数据
+    var manageCameraIndex;
+
+    function manageCamera(gdIndex){
+      manageCameraIndex = gdIndex;
+      $("#cameraForm").form("clear");
+      var rowDatas = $("#dgCameraManage").datagrid("getRows");
+      $('#cameraGroupDlg').window('open');
+      if(rowDatas&&rowDatas.length>0){
+        var rowDataTmp = rowDatas[gdIndex];
+        $("#cameraForm").form("load",rowDataTmp);
+        if(rowDataTmp.orderIndex==0){
+          $("#inputOrderIndexCamera").val(0);
+        }
+      }
+    }
+
+    /****Remove camera item***/
+    function removeSelectedCameraItem(){
+      var selectedRowItem = $("#dgCameraManage").datagrid("getSelected");
+      var rowIndex = $("#dgCameraManage").datagrid("getRowIndex",selectedRowItem);
+      $("#dgCameraManage").datagrid("deleteRow",rowIndex);
+    }
+
+    /********Add item to camera list*********/
+    function saveCameraInEditOrSave(){
+      var result = {};
+      $.each($("#cameraForm").serializeArray(), function() {
+          result[this.name] = this.value;
+      });
+      //If save
+      if(manageCameraIndex<0){
+        //Append data 
+        $('#dgCameraManage').datagrid('appendRow',result);
+      }else{
+        $('#dgCameraManage').datagrid('updateRow',{
+          index: manageCameraIndex,
+          row: result
+        });
+      }
+      //Close dialog
+      $('#cameraGroupDlg').dialog('close');
+    }
+
+    /*******Post camera array to server********/
+    function saveCamera(){
+      var postData = {};
+      postData.projectId = $("#dataGrid").datagrid("getSelected")._id;
+      postData.cameras = JSON.stringify($('#dgCameraManage').datagrid('getRows'));
+      $.post("/project/project/updateCamera", postData, function(result){
+        if(result.success){
+          $.messager.show({    // show error message
+              title: '提示<span style="color:red;">!</span>',
+              msg: "<div style='text-align:center;margin-top:10px;'>修改成功！</div>",
+              style:{
+              right:'',
+              top:document.body.scrollTop+document.documentElement.scrollTop,
+              bottom:''
+            }
+          });
+          $("#dataGrid").datagrid("reload");
+          $("#cameraManageDialog").dialog("close");
+        }else{
+          $.messager.show({    // show error message
+              title: '提示<span style="color:red;">!</span>',
+              msg: "<div style='text-align:center;margin-top:10px;'>修改失败！</div>",
+              style:{
+              right:'',
+              top:document.body.scrollTop+document.documentElement.scrollTop,
+              bottom:''
+            }
+          });
+        }
+      });
+    }
+
+
+
 
       /**Do search submit**/
       function submitSearchForm(){
@@ -319,16 +457,16 @@
                     <input name="description" id="description_input" class="easyui-validatebox" required="true">
                 </div>
                 <div class="fitem">
-                    <label>startTime</label>
-                    <input name="startTime" id="startTime_input" class="easyui-validatebox" required="true">
+                    <label>项目开始时间</label>
+                    <input name="startTime" id="startTime_input" class="easyui-datetimebox" required="true">
                 </div>
                 <div class="fitem">
                     <label>项目预估结束时间</label>
-                    <input name="preEndTime" id="preEndTime_input" class="easyui-validatebox" required="true">
+                    <input name="preEndTime" id="preEndTime_input" class="easyui-datetimebox" required="true">
                 </div>
                 <div class="fitem">
                     <label>项目实际结束时间</label>
-                    <input name="endTime" id="endTime_input" class="easyui-validatebox" required="true">
+                    <input name="endTime" id="endTime_input" class="easyui-datetimebox" required="true">
                 </div>
                 <div class="fitem">
                     <label>项目类型</label>
@@ -377,6 +515,61 @@
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveForm()">保存</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
     </div>
+
+
+    <!--相机管理Modal Begin-->
+      <div id="cameraManageDialog" class="easyui-dialog" title="相机管理" data-options="modal:true,closed:true,iconCls:'icon-save', buttons:'#cameraDlg-buttons'" style="width:650px;height:400px;padding:10px;">
+        <table id="dgCameraManage">
+        </table>
+        <div id="cameraToolbar" style="text-align:right;">
+          <span>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="manageCamera(-1)">新建</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeSelectedCameraItem()">删除</a>
+          </span>
+        </div>
+      </div>
+      <div id="cameraDlg-buttons">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveCamera()" style="width:90px">保存</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#cameraManageDialog').dialog('close')" style="width:90px">关闭</a>
+      </div>
+      <!--相机管理图片Modal End-->
+
+
+     <!--新建修改相机内容 Begin-->
+      <div id="cameraGroupDlg" class="easyui-dialog" title="相机编辑" data-options="modal:true,closed:true,iconCls:'icon-save',buttons:'#cameraEditlg-buttons'" style="width:450px;height:400px;padding:10px;" >
+          <form id="cameraForm">
+            <table cellpadding="5" style="width:90%;margin:0 auto 0 auto;text-align:center;">
+              <tr>
+                  <td>排序:</td>
+                  <td><input class="easyui-textbox" id="viewIndexCamera" name="viewIndex" data-options="required:true"></input></td>
+              </tr>
+              <tr>
+                  <td>相机serialId:</td>
+                  <td><input class="easyui-textbox" name="cameraId" data-options="required:true"></input></td>
+              </tr>
+              <tr>
+                  <td>标题:</td>
+                  <td><input class="easyui-textbox" name="title" data-options="required:true"></input></td>
+              </tr>
+              <tr>
+                  <td>描述:</td>
+                  <td><textarea class="easyui-textbox" name="description" data-options="multiline:true" style="height:80px"></textarea></td>
+              </tr>
+
+            </table>
+            <!-- <div> <input type="text" name=""/> </div>
+            <div> <input type="text" name=""/></div>
+            <div>类型 </div>
+            <div> <textarea type="text" name=""></textarea></div> -->
+            <!-- <input type="hidden" name="tabIndex"/> -->
+          </form>
+          
+      </div> 
+      <div id="cameraEditlg-buttons">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveCameraInEditOrSave()" style="width:90px">保存</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#cameraGroupDlg').dialog('close')" style="width:90px">取消</a>
+      </div>      
+     <!--新建修改相机内容Grid End-->
 
   </body>
 </html>

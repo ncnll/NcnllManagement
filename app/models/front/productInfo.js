@@ -70,6 +70,10 @@ var ProductInfoSchema = new Schema({
       orderIndex:{type:Number},
       title:{type:String, default:''},
       realtimeID:{type:String, default:''},
+      cameraId:{type:String, default:''},
+      startTime:{type:Date},
+      endTime:{type:Date},
+      cameraIndex:{type:String, default:''},
       description:{type:String, default:''}
     }],
     comment:"实时图片"

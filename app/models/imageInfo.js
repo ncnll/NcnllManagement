@@ -32,6 +32,7 @@ var ImageInfoSchema = new Schema({
 //     ii.图片裁剪存储（缩略图）:
 //     iii.获取图片相机编号:cameraSerialId
   name:{type:String, default:"", comment:"图片名称"},
+  path:{type:String, default:"", comment:"图片地址"},
   cameraSerialId : {type:String, default:"", comment:"相机编号"},
   //设备CPU编码
   deviceCpuId:{type:String, default:"", comment:"设备CPU编码"},

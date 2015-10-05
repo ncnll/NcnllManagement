@@ -24,6 +24,8 @@ var env = process.env.NODE_ENV || 'development'
   , config = require('./config/config')[env]
   , mongoose = require('mongoose');
 
+//process.env.TZ="UTC";
+
 // Bootstrap db connection
 // Connect to mongodb
 var connect = function () {
@@ -52,7 +54,7 @@ fs.readdirSync(models_path).forEach(function (file) {
   if (~file.indexOf('.js')) require(models_path + '/' + file)
 })
 //Front models
-var models_path = __dirname + '/app/models/front'
+models_path = __dirname + '/app/models/front'
 fs.readdirSync(models_path).forEach(function (file) {
   if (~file.indexOf('.js')) require(models_path + '/' + file)
 })
