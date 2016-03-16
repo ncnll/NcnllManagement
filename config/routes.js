@@ -171,6 +171,7 @@ module.exports = function (app, passport) {
    //用户信息管理
   app.get("/front/user/toSearchList", userCtrl.toSearchList);
   app.post("/front/user/searchList", userCtrl.searchList);
+  app.post("/front/user/searchNameIdList", userCtrl.searchNameIdList);
   app.post("/front/user/save", userCtrl.add);
   app.post("/front/user/remove", userCtrl.remove);
   app.post("/front/user/update", userCtrl.updateById);

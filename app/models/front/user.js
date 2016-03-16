@@ -14,8 +14,8 @@ var crypto = require('crypto');
 
 var UserSchema = new Schema({
   /*  name: { type: String, default: '' },*/
-  username: { type: String, default: '', comment:"用户名"},
-  email: { type: String, default: '', comment:"注册邮箱" },
+  username: { type: String, default: '', comment:"用户名", minlength: 3, maxlength:30},
+  email: { type: String, default: '', comment:"注册邮箱", minlength: 3, maxlength:50 },
   //producer, comsumer, manager
   userrole:{type:Number, comment:"用户角色"},
   //浏览次数
@@ -164,7 +164,8 @@ UserSchema.methods = {
 UserSchema.statics = {
   queryList: function (options, cb) {
     var criteria = options.criteria || {};
-      this.find(criteria)
+    var limitFields = options.limitFields || {};
+      this.find(criteria, limitFields)
       .sort(options.sortObj)
       .limit(options.rows)
       .skip(options.rows * (options.page-1))

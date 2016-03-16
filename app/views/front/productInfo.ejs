@@ -91,6 +91,8 @@
 
     <script type="text/javascript">
       
+      var categoryTypes={};
+      var belongUsers = {};
       /***
        * author: charmyin
        * datetime: 2015-5-1
@@ -140,10 +142,10 @@
               {field:'productName', title:'产品名称', width:120},
               {field:'projectId', title:'所属项目', hidden:true},
               {field:'productDescription', title:'产品描述', width:120},
-              {field:'productCategory', title:'产品类别', width:120},
+              {field:'productCategory', title:'产品类别', width:120, formatter:fmtCategory},
               {field:'productOriginPlace', title:'产品产地', width:120},
               {field:'linkToBuy', title:'购买链接', width:120},
-              {field:'user', title:'所属用户', width:120},
+              {field:'user', title:'所属用户', width:120, formatter:fmtUserName},
               {field:'indexImgIds', title:'展示图片集合', width:120},
               {field:'browseCount', title:'浏览次数', width:120},
               {field:'praisedUsers', title:'点赞次数', width:120},
@@ -263,12 +265,10 @@
             revert:true,
             proxy:'clone',
             onStartDrag:function(){
-                console.log("onStartDrag")
                 isDrag=true;
                 $(this).parent().parent().hide(500);
                 $(this).draggable('options').cursor = 'not-allowed';
                 $(this).draggable('proxy').css('z-index',10);
-                
             },
             onStopDrag:function(){
                 $(this).parent().parent().show(500);
@@ -752,8 +752,15 @@
         }
       }
 
+      //格式化产品分类
+      function fmtCategory(value,row,index){
+        return categoryTypes[value];
+      }
 
-
+      //格式化所属用户
+      function fmtUserName(value,row,index){
+        return belongUsers[value];
+      }
 
     </script>
   </head>
@@ -808,7 +815,20 @@
                 </div>
                 <div class="fitem">
                     <label>产品类别</label>
-                    <input name="productCategory" id="productCategory_input" class="easyui-validatebox" required="true">
+                    <input class="easyui-combobox" name="productCategory" id="productCategory_input" data-options="
+                      valueField: '_id',
+                      textField: 'categoryName',
+                      panelHeight:'auto',
+                      editable:false,
+                      loadFilter:function(data){
+                        if(data.rows){
+                          for(var i=0; i<data.rows.length; i++){
+                            categoryTypes[data.rows[i]._id] = data.rows[i].categoryName;
+                          }
+                        }
+                        return data.rows;
+                      },
+                      url: '/front/category/searchList'">
                 </div>
                 <div class="fitem">
                     <label>产品产地</label>
@@ -820,8 +840,26 @@
                 </div>
                 <div class="fitem">
                     <label>所属用户</label>
-                    <input name="user" id="user_input" class="easyui-validatebox" required="true">
+                  
+                    <input class="easyui-combobox" name="user" id="user_input" data-options="
+                      valueField: '_id',
+                      textField: 'username',
+                      panelHeight:'auto',
+                      editable:false,
+                      loadFilter:function(data){
+                        if(data){
+                          for(var i=0; i<data.length; i++){
+                            belongUsers[data[i]._id] = data[i].username;
+                          }
+                        }
+                        return data;
+                      },
+                      url: '/front/user/searchNameIdList'">
+                   
                 </div>
+                
+               
+                <!-- 
                 <div class="fitem">
                     <label>展示图片集合</label>
                     <input name="indexImgIds" id="indexImgIds_input" class="easyui-validatebox" required="true">
@@ -830,11 +868,11 @@
                     <label>浏览次数</label>
                     <input name="browseCount" id="browseCount_input" class="easyui-validatebox" required="true">
                 </div>
-                <div class="fitem">
+                 <div class="fitem">
                     <label>点赞次数</label>
-                    <input name="praisedUsers" id="praisedUsers_input" class="easyui-validatebox" required="true">
+                    <input name="praisedUsers" id="praisedUsers_input" class="easyui-validatebox" >
                 </div>
-                <!-- <div class="fitem">
+                <div class="fitem">
                     <label>图片轮播</label>
                     <input name="scrollPics" id="scrollPics_input" class="easyui-validatebox" required="true">
                 </div> -->

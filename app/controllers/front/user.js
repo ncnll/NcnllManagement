@@ -25,6 +25,26 @@ exports.searchList = function(req, res) {
   });
 };
 
+
+exports.searchNameIdList = function(req, res) {
+  var crite = utils.setCriteriaParam(req.body);
+  var sortObj = utils.setSortParam(req.body);
+  CommonModel.count(crite, function(errors, count){
+    if(errors){
+      res.json({
+         "success":false,
+         "msg":"查询过程中出错！",
+         "error":errors
+      });
+      return;
+    }
+    var limitFields = {username:1, _id:1};
+    CommonModel.queryList({rows:req.body.rows, page:req.body.page, criteria:crite, sort:sortObj, limitFields:limitFields}, function(err,list){
+      res.json(list);
+    });
+  });
+};
+
 exports.add = function (req, res) {
     delete req.body._id;
     req.body.password="111111";

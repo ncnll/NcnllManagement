@@ -22,6 +22,8 @@ var ProductInfoSchema = new Schema({
   user:{type: Schema.ObjectId, ref:'User', comment:"所属用户"},
   //所属项目
   projectId:{type:String, default:'', comment:"所属项目"},
+  //是否前台展示
+  isShowFront:{type:Boolean, default:'', comment:"是否前台展示"},
   //item展示图片
   indexImgIds:{
     type:[{
