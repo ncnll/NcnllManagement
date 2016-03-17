@@ -48,6 +48,7 @@ exports.updateById = function(req, res){
                 });
       return;
     }
+    console.log(req.body)
     CommonModel.findOneAndUpdate({ _id:req.body._id},req.body, function (err, obj) {
       utils.setSaveResponse(err, res, obj);
     });

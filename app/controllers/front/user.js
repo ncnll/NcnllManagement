@@ -38,6 +38,9 @@ exports.searchNameIdList = function(req, res) {
       });
       return;
     }
+    crite.userrole=0;
+    console.log(crite)
+    
     var limitFields = {username:1, _id:1};
     CommonModel.queryList({rows:req.body.rows, page:req.body.page, criteria:crite, sort:sortObj, limitFields:limitFields}, function(err,list){
       res.json(list);
