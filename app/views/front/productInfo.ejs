@@ -146,9 +146,9 @@
               {field:'productOriginPlace', title:'产品产地', width:120},
               {field:'linkToBuy', title:'购买链接', width:120},
               {field:'user', title:'所属用户', width:120, formatter:fmtUserName},
-              {field:'indexImgIds', title:'展示图片集合', width:120},
+              {field:'indexImgIds', title:'展示图片集合', hidden:true},
               {field:'browseCount', title:'浏览次数', width:120},
-              {field:'praisedUsers', title:'点赞次数', width:120},
+              {field:'praisedUsers', title:'点赞次数', hidden:true},
               {field:'scrollPics', title:'图片轮播', width:120,
                 formatter: function(value,row,index){
                   return "<a href='javascript:appendRowOfImageScroll("+index+")'>管理图片轮播</a>";  

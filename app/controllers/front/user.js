@@ -38,7 +38,8 @@ exports.searchNameIdList = function(req, res) {
       });
       return;
     }
-    crite.userrole=0;
+    crite.userrole=1;
+    crite.disabledProducer={ $ne: 1 };
     console.log(crite)
     
     var limitFields = {username:1, _id:1};

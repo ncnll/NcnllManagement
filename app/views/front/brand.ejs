@@ -99,14 +99,13 @@
             columns:[[
                       //{field:'ck', checkbox:true},
                         {field:'brandname', title:'品牌名称', width:120},
-                        {field:'website', title:'拥有网站', width:120},
-                        {field:'address', title:'总部地址', width:120},
-                        {field:'introduction', title:'品牌介绍', width:120},
-                        {field:'user', title:'所有人', width:120},
+                        {field:'website', title:'拥有网站', width:220},
                         {field:'userName', title:'所有人名称', width:120},
-                        {field:'category', title:'产品类别', width:120},
-                        {field:'brandPhotoIds', title:'品牌照片', width:120},
-                        {field:'_id', title:'编号', width:120}
+                        {field:'address', title:'总部地址', width:220},
+                        {field:'introduction', title:'品牌介绍', hidden:true},
+                        {field:'category', title:'产品类别', hidden:true},
+                        {field:'brandPhotoIds', title:'品牌照片', hidden:true},
+                        {field:'_id', title:'编号', hidden:true}
             ]],
             onLoadError: function(msge){
                 $.messager.alert('错误信息','服务器连接已断开或服务器内部错误！','error');
@@ -251,6 +250,12 @@
               });
           }
       }
+
+      //选择所属用户时，设定用户名称
+      function setUserName(rec){
+        console.log(rec.username);
+        $("#userName_input").val(rec.username);                       
+      }
     </script>
   </head>
 
@@ -303,21 +308,24 @@
                     <input name="address" id="address_input" class="easyui-validatebox" required="true">
                 </div>
                 <div class="fitem">
-                    <label>品牌介绍</label>
-                    <input name="introduction" id="introduction_input" class="easyui-validatebox" required="true">
+                    <label style="display:inline;font-weight:bold;">品牌介绍</label>
+                    <textarea style="width:330px;height:120px" name="introduction" id="introduction_input" class="easyui-validatebox"></textarea>
                 </div>
                 <div class="fitem">
                     <label>所有人</label>
-                    <input name="user" id="user_input" class="easyui-validatebox" required="true">
+                     <input name="userName" id="userName_input" type="hidden">
+                    <input class="easyui-combobox" name="user" id="user_input" data-options="
+                      valueField: '_id',
+                      textField: 'username',
+                      panelHeight:'auto',
+                      editable:false,
+                      onSelect:setUserName,
+                      url: '/front/user/searchNameIdList'">
                 </div>
-                <div class="fitem">
-                    <label>所有人名称</label>
-                    <input name="userName" id="userName_input" class="easyui-validatebox" required="true">
-                </div>
-                <div class="fitem">
+               <!--  <div class="fitem">
                     <label>产品类别</label>
                     <input name="category" id="category_input" class="easyui-validatebox" required="true">
-                </div>
+                </div> -->
                 <div class="fitem">
                     <label>品牌照片</label>
                     <img id="brandImageImg" style="height:200px;width:200px;" />

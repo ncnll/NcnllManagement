@@ -16,8 +16,9 @@ var UserSchema = new Schema({
   /*  name: { type: String, default: '' },*/
   username: { type: String, default: '', comment:"用户名", minlength: 3, maxlength:30},
   email: { type: String, default: '', comment:"注册邮箱", minlength: 3, maxlength:50 },
-  //producer, comsumer, manager
+  //1.producer, 0.comsumer, 2.manager
   userrole:{type:Number, comment:"用户角色"},
+  disabledProducer:{type:Number, defalult:0, comment:"是否禁用生产者"},
   //浏览次数
   browseCount:{type:Number, defalult:0, comment:"浏览次数"},
   //电话号码
